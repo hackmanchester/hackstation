@@ -11,8 +11,13 @@
     <div class="ui secondary pointing menu">
         <li class="item">{{> loginButtons}}</li>
         <a class="item" href="{{pathFor route='home'}}">Home</a>
-        <a class="item" href="{{pathFor route='hacks'}}">Hacks</a>
-        <div class="right menu"></div>
+        <a class="item" href="{{pathFor route='hacks'}}">All Hacks</a>
+        <a class="item" href="{{pathFor route='myhacks'}}">My Hacks</a>
+        <div class="right menu">
+            {{#if judge}}
+                <a class="item" href="{{pathFor route='judgingOverview'}}">Judging</a>
+            {{/if}}
+        </div>
     </div>
 </template>
 
@@ -36,6 +41,32 @@
     <div class="ui raised very padded text container segment">
         <h1>Hacks!</h1>
         <p>How are you and your competition doing?</p>
+    </div>
+    <div class="ui three column doubling grid container">
+        {{#each hacks}}
+            <div class="column">
+                <div class="ui segment ">
+                    {{> hackOverview }}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+    <div class="ui raised very padded text container segment">
+        <h2>Want to submit a new hack?</h2>
+        {{#unless currentUser}}
+            You are not currently logged in!
+        {{/unless}}
+        {{#if currentUser}}
+            <form class="new-hack">
+                {{> modifyEntry }}
+            </form>
+        {{/if}}
+    </div>
+</template>
+
+<template name="myhacks">
+    <div class="ui raised very padded text container segment">
+        <h1>Your Hacks!</h1>
     </div>
     <div class="ui three column doubling grid container">
         {{#each hacks}}
