@@ -14,3 +14,7 @@ accounts-github
 jquery
 semantic:ui
 flemay:less-autoprefixer
+accounts-google
+accounts-facebook
+accounts-twitter
+accounts-meetup

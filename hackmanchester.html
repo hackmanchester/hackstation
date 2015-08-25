@@ -20,13 +20,15 @@
     <div class="ui raised very padded text container segment">
         <h1 class="ui header">Welcome to HackManchester!</h1>
         <h2 class="ui header">Latest submissions:</h2>
-        <ul>
+        <div class="ui one column doubling grid container">
             {{#each hacks}}
-                <li>
-                    {{> hackOverview }}
-                </li>
+                <div class="column">
+                    <div class="ui segment ">
+                        {{> hackOverview }}
+                    </div>
+                </div>
             {{/each}}
-        </ul>
+        </div>
     </div>
 </template>
 
@@ -35,7 +37,7 @@
         <h1>Hacks!</h1>
         <p>How are you and your competition doing?</p>
     </div>
-    <div class="ui four column doubling grid container">
+    <div class="ui three column doubling grid container">
         {{#each hacks}}
             <div class="column">
                 <div class="ui segment ">
@@ -58,7 +60,17 @@
 </template>
 
 <template name="hackOverview">
-    {{name}} : {{team}} : {{description}}
+    <div class="ui segments">
+        <div class="ui segment">
+            {{name}}
+        </div>
+        <div class="ui secondary segment">
+            {{team}}
+        </div>
+        <div class="ui secondary segment">
+            {{description}}
+        </div>
+    </div>
     {{#if myHack }}
         <a href="{{pathFor 'hack'}}">Edit</a>
     {{/if}}
@@ -68,39 +80,44 @@
 </template>
 
 <template name="hack">
+    <div class="ui raised very padded text container segment">
     {{#unless myHack}}
-    <div>
-        <h1>{{name}}</h1>
-        <h2>{{team}}</h2>
-        <p>{{description}}</p>
-    </div>
+        <div class="ui segments">
+            <div class="ui segment">
+                <h1>{{name}}</h1>
+            </div>
+            <div class="ui secondary segment">
+                <h2>{{team}}</h2>
+            </div>
+            <div class="ui secondary segment">
+                <p>{{description}}</p>
+            </div>
+        </div>
     {{/unless}}
     {{#if myHack}}
         <form class="edit-hack">
             {{> modifyEntry }}
         </form>
     {{/if}}
+    </div>
 </template>
 
 <template name="modifyEntry">
-    <div>
-    <div class="ui input">
-        <label for="team">Team: <input type="text" name="team" placeholder="Team name ..." value="{{team}}" /></label>
-    </div>
-    </div>
-    <div>
-    <div class="ui input">
-        <label for="name">Name: <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" /></label>
-    </div>
-    </div>
-    <div>
-    <div class="ui input">
-        <label for="description">Description: <input type="text" name="description" placeholder="Description ..." value="{{description}}" /></label>
-    </div>
-    </div>
-    <div>
-    <div class="ui input">
-        <button type="submit" name="submit">Submit!</button>
-    </div>
+    <div class="ui form">
+        <div class="two fields">
+            <div class="field">
+                <label for="team">Team:</label>
+                <input type="text" name="team" placeholder="Team name ..." value="{{team}}" />
+            </div>
+            <div class="field">
+                <label for="name">Name:</label>
+                <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
+            </div>
+        </div>
+        <div class="field">
+            <label for="description">Description:</label>
+            <input type="text" name="description" placeholder="Description ..." value="{{description}}" />
+        </div>
+        <button class="ui button" type="submit">Submit</button>
     </div>
 </template>

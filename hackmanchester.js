@@ -25,7 +25,7 @@ if (Meteor.isClient) {
 
   Template.home.helpers({
     hacks: function(){
-      return hacks.find({},{$sort:{created:-1}})
+      return hacks.find({},{$sort:{created:-1},limit:3})
     }
   })
 
@@ -48,7 +48,6 @@ if (Meteor.isClient) {
       target.name.value = '';
       target.team.value = '';
       target.description.value = '';
-      //Router.go('hack', {_id: id});
     }
   });
 
