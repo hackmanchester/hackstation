@@ -1,0 +1,80 @@
+<head>
+  <title>hackmanchester</title>
+</head>
+
+<template name="layout">
+    {{> navigation }}
+    {{> yield}}
+</template>
+
+<template name="navigation">
+    <ul>
+        <li>{{> loginButtons}}</li>
+        <li><a href="{{pathFor route='home'}}">Home</a></li>
+        <li><a href="{{pathFor route='hacks'}}">Hacks</a></li>
+    </ul>
+</template>
+
+<template name="home">
+    <h1>Welcome to HackManchester!</h1>
+    <h2>Latest submissions:</h2>
+    <ul>
+        {{#each hacks}}
+            <li>
+                {{> hackOverview }}
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="hacks">
+    <h1>Hacks!</h1>
+    <ul>
+        {{#each hacks}}
+            <li>
+            {{> hackOverview }}
+            </li>
+        {{/each}}
+    </ul>
+    <h2>Want to submit a new hack?</h2>
+    {{#unless currentUser}}
+        You are not currently logged in!
+    {{/unless}}
+    {{#if currentUser}}
+        <form class="new-hack">
+            {{> modifyEntry }}
+        </form>
+    {{/if}}
+</template>
+
+<template name="hackOverview">
+    {{name}} : {{team}} : {{description}}
+    {{#if myHack }}
+        <a href="{{pathFor 'hack'}}">Edit</a>
+    {{/if}}
+    {{#unless myHack }}
+        <a href="{{pathFor 'hack'}}">View</a>
+    {{/unless}}
+</template>
+
+<template name="hack">
+    {{#unless myHack}}
+    <div>
+        <h1>{{name}}</h1>
+        <h2>{{team}}</h2>
+        <p>{{description}}</p>
+    </div>
+    {{/unless}}
+    {{#if myHack}}
+        <form class="edit-hack">
+            {{> modifyEntry }}
+        </form>
+    {{/if}}
+</template>
+
+<template name="modifyEntry">
+    <label for="team">Team: <input type="text" name="team" placeholder="Team name ..." value="{{team}}" /></label>
+    <label for="name">Name: <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" /></label>
+    <label for="description">Description: <input type="text" name="description" placeholder="Description ..." value="{{description}}" /></label>
+    <button type="submit" name="submit">Submit!</button>
+</template>
