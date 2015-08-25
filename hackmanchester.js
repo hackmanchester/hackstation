@@ -48,7 +48,7 @@ if (Meteor.isClient) {
       target.name.value = '';
       target.team.value = '';
       target.description.value = '';
-      Router.go('hack', {_id: id});
+      //Router.go('hack', {_id: id});
     }
   });
 

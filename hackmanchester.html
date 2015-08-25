@@ -8,43 +8,53 @@
 </template>
 
 <template name="navigation">
-    <ul>
-        <li>{{> loginButtons}}</li>
-        <li><a href="{{pathFor route='home'}}">Home</a></li>
-        <li><a href="{{pathFor route='hacks'}}">Hacks</a></li>
-    </ul>
+    <div class="ui secondary pointing menu">
+        <li class="item">{{> loginButtons}}</li>
+        <a class="item" href="{{pathFor route='home'}}">Home</a>
+        <a class="item" href="{{pathFor route='hacks'}}">Hacks</a>
+        <div class="right menu"></div>
+    </div>
 </template>
 
 <template name="home">
-    <h1>Welcome to HackManchester!</h1>
-    <h2>Latest submissions:</h2>
-    <ul>
-        {{#each hacks}}
-            <li>
-                {{> hackOverview }}
-            </li>
-        {{/each}}
-    </ul>
+    <div class="ui raised very padded text container segment">
+        <h1 class="ui header">Welcome to HackManchester!</h1>
+        <h2 class="ui header">Latest submissions:</h2>
+        <ul>
+            {{#each hacks}}
+                <li>
+                    {{> hackOverview }}
+                </li>
+            {{/each}}
+        </ul>
+    </div>
 </template>
 
 <template name="hacks">
-    <h1>Hacks!</h1>
-    <ul>
+    <div class="ui raised very padded text container segment">
+        <h1>Hacks!</h1>
+        <p>How are you and your competition doing?</p>
+    </div>
+    <div class="ui four column doubling grid container">
         {{#each hacks}}
-            <li>
-            {{> hackOverview }}
-            </li>
+            <div class="column">
+                <div class="ui segment ">
+                    {{> hackOverview }}
+                </div>
+            </div>
         {{/each}}
-    </ul>
-    <h2>Want to submit a new hack?</h2>
-    {{#unless currentUser}}
-        You are not currently logged in!
-    {{/unless}}
-    {{#if currentUser}}
-        <form class="new-hack">
-            {{> modifyEntry }}
-        </form>
-    {{/if}}
+    </div>
+    <div class="ui raised very padded text container segment">
+        <h2>Want to submit a new hack?</h2>
+        {{#unless currentUser}}
+            You are not currently logged in!
+        {{/unless}}
+        {{#if currentUser}}
+            <form class="new-hack">
+                {{> modifyEntry }}
+            </form>
+        {{/if}}
+    </div>
 </template>
 
 <template name="hackOverview">
@@ -73,8 +83,24 @@
 </template>
 
 <template name="modifyEntry">
-    <label for="team">Team: <input type="text" name="team" placeholder="Team name ..." value="{{team}}" /></label>
-    <label for="name">Name: <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" /></label>
-    <label for="description">Description: <input type="text" name="description" placeholder="Description ..." value="{{description}}" /></label>
-    <button type="submit" name="submit">Submit!</button>
+    <div>
+    <div class="ui input">
+        <label for="team">Team: <input type="text" name="team" placeholder="Team name ..." value="{{team}}" /></label>
+    </div>
+    </div>
+    <div>
+    <div class="ui input">
+        <label for="name">Name: <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" /></label>
+    </div>
+    </div>
+    <div>
+    <div class="ui input">
+        <label for="description">Description: <input type="text" name="description" placeholder="Description ..." value="{{description}}" /></label>
+    </div>
+    </div>
+    <div>
+    <div class="ui input">
+        <button type="submit" name="submit">Submit!</button>
+    </div>
+    </div>
 </template>

@@ -11,3 +11,6 @@ accounts-ui
 accounts-password
 iron:router
 accounts-github
+jquery
+semantic:ui
+flemay:less-autoprefixer
