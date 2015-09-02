@@ -9,6 +9,9 @@ Router.map(function(){
     path: '/'
   });
   this.route('hacks');
+  this.route('administration',{
+    path:'/admin'
+  });
   this.route('myhacks',{
     path: '/hacks/my'
   });
@@ -26,11 +29,24 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
-  Template.navigation.helpers({
-    judge: function(){
-      return Meteor.user().profile.isJudge;
+  function isJudge(){
+    return Meteor.user().profile.isJudge;
+  }
+
+  function isAdmin(){
+    return Meteor.user().profile.isAdmin;
+  }
+
+  UI.registerHelper('trim250', function(context, options){
+    if(context){
+      return context.toString().substring(0, 250) + "...";
     }
-  })
+  });
+
+  Template.navigation.helpers({
+    isJudge: isJudge,
+    isAdmin: isAdmin
+  });
 
   Template.home.helpers({
     hacks: function(){
@@ -58,7 +74,8 @@ if (Meteor.isClient) {
         team:target.team.value,
         description:target.description.value,
         owner:Meteor.userId(),
-        created:new Date()
+        created:new Date(),
+        judgements: []
       });
       target.name.value = '';
       target.team.value = '';
@@ -83,10 +100,29 @@ if (Meteor.isClient) {
         }
       });
       Router.go('myHacks');
+    },
+    "submit .new-judgement": function(){
+      event.preventDefault();
+
+      var target = event.target;
+      if(target.judgement.value === '' && !Meteor.user().profile.isJudge) {
+        Meteor.error("Values cannot be null!")
+      }
+
+      hacks.update(this._id,{
+        $push: {
+          judgements: {
+            judgement: target.judgement.value,
+            created: new Date(),
+            judge: Meteor.userId()
+          }
+        }
+      });
+      target.judgement.value = '';
     }
   });
 
-  Template.hackOverview.helpers({
+  Template.hackoverview.helpers({
     myHack: function(){
       return this.owner === Meteor.userId();
     }
@@ -95,6 +131,24 @@ if (Meteor.isClient) {
   Template.hack.helpers({
     myHack: function(){
       return this.owner === Meteor.userId();
+    },
+    isJudge: isJudge,
+    judgesComments: function(){
+      return this.judgements.map(function(j){
+        var judge = Meteor.users.findOne({_id: j.judge});
+        var name = '';
+        if(judge.profile !== undefined && judge.profile.name !== undefined) {
+          name = judge.profile.name;
+        }
+        else {
+          name = 'No name specified!';
+        }
+        return {
+          judgement: j.judgement,
+          created: moment(j.created).format('DD-MM-YYYY hh:mm'),
+          judge: name
+        }
+      });
     }
   });
 
@@ -103,6 +157,13 @@ if (Meteor.isClient) {
       return hacks.find({owner:Meteor.userId()});
     }
   });
+
+  Template.administration.helpers({
+    isAdmin: isAdmin,
+    users: function(){
+      return Meteor.users.find({});
+    }
+  })
 }
 
 if (Meteor.isServer) {

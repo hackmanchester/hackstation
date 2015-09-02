@@ -14,26 +14,27 @@
         <a class="item" href="{{pathFor route='hacks'}}">All Hacks</a>
         <a class="item" href="{{pathFor route='myhacks'}}">My Hacks</a>
         <div class="right menu">
-            {{#if judge}}
+            {{#if isJudge}}
                 <a class="item" href="{{pathFor route='judgingOverview'}}">Judging</a>
+            {{/if}}
+            {{#if isAdmin}}
+                <a class="item" href="{{pathFor route='administration'}}">Admin</a>
             {{/if}}
         </div>
     </div>
 </template>
 
 <template name="home">
-    <div class="ui raised very padded text container segment">
-        <h1 class="ui header">Welcome to HackManchester!</h1>
-        <h2 class="ui header">Latest submissions:</h2>
-        <div class="ui one column doubling grid container">
-            {{#each hacks}}
-                <div class="column">
-                    <div class="ui segment ">
-                        {{> hackOverview }}
-                    </div>
-                </div>
-            {{/each}}
+    <div class="ui raised very padded text container">
+        <div class="ui segment">
+            <h1 class="ui header">Welcome to HackManchester!</h1>
         </div>
+        <div class="ui segment">
+            <h2 class="ui header">Latest submissions:</h2>
+        </div>
+        {{#each hacks}}
+            {{> hackoverview }}
+        {{/each}}
     </div>
 </template>
 
@@ -45,9 +46,7 @@
     <div class="ui three column doubling grid container">
         {{#each hacks}}
             <div class="column">
-                <div class="ui segment ">
-                    {{> hackOverview }}
-                </div>
+                {{> hackoverview }}
             </div>
         {{/each}}
     </div>
@@ -71,9 +70,7 @@
     <div class="ui three column doubling grid container">
         {{#each hacks}}
             <div class="column">
-                <div class="ui segment ">
-                    {{> hackOverview }}
-                </div>
+                {{> hackoverview }}
             </div>
         {{/each}}
     </div>
@@ -90,7 +87,7 @@
     </div>
 </template>
 
-<template name="hackOverview">
+<template name="hackoverview">
     <div class="ui segments">
         <div class="ui segment">
             {{name}}
@@ -99,19 +96,21 @@
             {{team}}
         </div>
         <div class="ui secondary segment">
-            {{description}}
+            {{trim250 description}}
+            <p>
+            {{#if myHack }}
+                <a href="{{pathFor 'hack'}}">Edit</a>
+            {{/if}}
+            {{#unless myHack }}
+                <a href="{{pathFor 'hack'}}">View</a>
+            {{/unless}}
+            </p>
         </div>
     </div>
-    {{#if myHack }}
-        <a href="{{pathFor 'hack'}}">Edit</a>
-    {{/if}}
-    {{#unless myHack }}
-        <a href="{{pathFor 'hack'}}">View</a>
-    {{/unless}}
 </template>
 
 <template name="hack">
-    <div class="ui raised very padded text container segment">
+    <div class="ui raised very padded text container">
     {{#unless myHack}}
         <div class="ui segments">
             <div class="ui segment">
@@ -129,6 +128,37 @@
         <form class="edit-hack">
             {{> modifyEntry }}
         </form>
+    {{/if}}
+    {{#if isJudge}}
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Judges comments:</h2>
+            </div>
+            {{#unless judgesComments}}
+            <div class="ui segment secondary">
+                <p>No comments have been made yet!</p>
+            </div>
+            {{/unless}}
+            {{#each judgesComments}}
+                <div class="ui segment">
+                    <div class="ui segment">
+                        {{created}} <strong>{{judge}}</strong>
+                    </div>
+                    <div class="ui inverted segment">
+                        {{judgement}}
+                    </div>
+                </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-judgement">
+                    <div class="field">
+                        <label for="judgement">Add a judgment:</label>
+                        <input type="text" name="judgement" placeholder="Add a judgment ..." value="{{judgement}}" />
+                    </div>
+                    <button class="ui button" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
     {{/if}}
     </div>
 </template>
@@ -150,5 +180,46 @@
             <input type="text" name="description" placeholder="Description ..." value="{{description}}" />
         </div>
         <button class="ui button" type="submit">Submit</button>
+    </div>
+</template>
+
+<template name="administration">
+    <div class="ui raised very padded text container">
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Users</h2>
+            </div>
+        </div>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Judge</th>
+                    <th>Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each users}}
+                <tr>
+                    <td>
+                        {{profile/name}}
+                        {{#if profile/name}}
+                            (
+                        {{/if}}
+                        {{_id}}
+                        {{#if profile/name}}
+                            )
+                        {{/if}}
+                    </td>
+                    <td>
+                        {{profile/isJudge}}
+                    </td>
+                    <td>
+                        {{profile/isAdmin}}
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
     </div>
 </template>
