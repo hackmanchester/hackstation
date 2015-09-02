@@ -45,7 +45,10 @@ if (Meteor.isClient) {
 
   Template.navigation.helpers({
     isJudge: isJudge,
-    isAdmin: isAdmin
+    isAdmin: isAdmin,
+    isActive: function(value){
+      return Router.current().route.getName() == value ? 'active' : '';
+    }
   });
 
   Template.home.helpers({

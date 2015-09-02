@@ -10,15 +10,15 @@
 <template name="navigation">
     <div class="ui secondary pointing menu">
         <li class="item">{{> loginButtons}}</li>
-        <a class="item" href="{{pathFor route='home'}}">Home</a>
-        <a class="item" href="{{pathFor route='hacks'}}">All Hacks</a>
-        <a class="item" href="{{pathFor route='myhacks'}}">My Hacks</a>
+        <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}">Home</a>
+        <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}">All Hacks</a>
+        <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}">My Hacks</a>
         <div class="right menu">
             {{#if isJudge}}
-                <a class="item" href="{{pathFor route='judgingOverview'}}">Judging</a>
+                <a class="item {{isActive 'judgingoverview'}}" href="{{pathFor route='judgingoverview'}}">Judging</a>
             {{/if}}
             {{#if isAdmin}}
-                <a class="item" href="{{pathFor route='administration'}}">Admin</a>
+                <a class="item {{isActive 'administration'}}" href="{{pathFor route='administration'}}">Admin</a>
             {{/if}}
         </div>
     </div>
