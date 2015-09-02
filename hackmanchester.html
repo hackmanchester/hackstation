@@ -12,7 +12,11 @@
         <li class="item">{{> loginButtons}}</li>
         <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}">Home</a>
         <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}">All Hacks</a>
+        {{#unless isJudge}}
+        {{#if currentUser}}
         <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}">My Hacks</a>
+        {{/if}}
+        {{/unless}}
         <div class="right menu">
             {{#if isJudge}}
                 <a class="item {{isActive 'judgingoverview'}}" href="{{pathFor route='judgingoverview'}}">Judging</a>
@@ -50,6 +54,7 @@
             </div>
         {{/each}}
     </div>
+    {{#unless isJudge}}
     <div class="ui raised very padded text container segment">
         <h2>Want to submit a new hack?</h2>
         {{#unless currentUser}}
@@ -61,6 +66,7 @@
             </form>
         {{/if}}
     </div>
+    {{/unless}}
 </template>
 
 <template name="myhacks">

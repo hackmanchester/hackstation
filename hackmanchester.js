@@ -29,23 +29,21 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
-  function isJudge(){
-    return Meteor.user().profile.isJudge;
-  }
-
-  function isAdmin(){
-    return Meteor.user().profile.isAdmin;
-  }
-
   UI.registerHelper('trim250', function(context, options){
     if(context){
       return context.toString().substring(0, 250) + "...";
     }
   });
 
+  UI.registerHelper('isJudge', function(context, options){
+    return Meteor.user().profile.isJudge;
+  });
+
+  UI.registerHelper('isAdmin', function(context, options){
+    return Meteor.user().profile.isJudge;
+  });
+
   Template.navigation.helpers({
-    isJudge: isJudge,
-    isAdmin: isAdmin,
     isActive: function(value){
       return Router.current().route.getName() == value ? 'active' : '';
     }
@@ -135,7 +133,6 @@ if (Meteor.isClient) {
     myHack: function(){
       return this.owner === Meteor.userId();
     },
-    isJudge: isJudge,
     judgesComments: function(){
       return this.judgements.map(function(j){
         var judge = Meteor.users.findOne({_id: j.judge});
@@ -162,7 +159,6 @@ if (Meteor.isClient) {
   });
 
   Template.administration.helpers({
-    isAdmin: isAdmin,
     users: function(){
       return Meteor.users.find({});
     }
