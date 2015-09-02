@@ -40,7 +40,7 @@ if (Meteor.isClient) {
   });
 
   UI.registerHelper('isAdmin', function(context, options){
-    return Meteor.user().profile.isJudge;
+    return Meteor.user().profile.isAdmin;
   });
 
   Template.navigation.helpers({
@@ -100,7 +100,7 @@ if (Meteor.isClient) {
           description: target.description.value
         }
       });
-      Router.go('myHacks');
+      Router.go('myhacks');
     },
     "submit .new-judgement": function(){
       event.preventDefault();
@@ -162,11 +162,39 @@ if (Meteor.isClient) {
     users: function(){
       return Meteor.users.find({});
     }
-  })
+  });
+
+  Template.administration.events({
+    "click .toggle-isjudge": function () {
+      event.preventDefault();
+      Meteor.call('setJudge', this._id, !this.profile.isJudge);
+    },
+    "click .toggle-isadmin": function () {
+      event.preventDefault();
+      Meteor.call('setAdmin', this._id, !this.profile.isAdmin);
+    }
+  });
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
+  });
+
+  Meteor.methods({
+    setJudge: function(userId, isJudge) {
+      Meteor.users.update(userId, {
+        $set: {
+          "profile.isJudge": isJudge
+        }
+      });
+    },
+    setAdmin: function(userId, isAdmin) {
+      Meteor.users.update(userId, {
+        $set: {
+          "profile.isAdmin": isAdmin
+        }
+      });
+    }
   });
 }
