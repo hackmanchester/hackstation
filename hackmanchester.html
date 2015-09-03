@@ -29,15 +29,17 @@
 </template>
 
 <template name="home">
-    <div class="ui raised very padded text container">
-        <div class="ui segment">
-            <h1 class="ui header">Welcome to HackManchester!</h1>
-        </div>
-        <div class="ui segment">
-            <h2 class="ui header">Latest submissions:</h2>
-        </div>
+    <div class="ui raised very padded text container segment">
+        <h1 class="ui header">Welcome to HackManchester!</h1>
+    </div>
+    <div class="ui raised padded text container segment">
+        <h2 class="ui header">Latest submissions:</h2>
+    </div>
+    <div class="ui three column doubling grid container">
         {{#each hacks}}
-            {{> hackoverview }}
+            <div class="column">
+                {{> hackoverview }}
+            </div>
         {{/each}}
     </div>
 </template>
@@ -212,8 +214,18 @@
                 <h2>Challenges</h2>
             </div>
             {{#each challenges}}
-            <div class="ui segment secondary">
-                <p>{{description}}</p>
+            <div class="ui segment secondary form">
+                <form class="edit-challenge">
+                    <div class="two fields">
+                        <div class="field">
+                            <input type="text" name="description" placeholder="A Challenge" value="{{description}}" />
+                        </div>
+                        <div class="field">
+                            <button class="ui button" type="submit">Save</button>
+                            <button class="ui button delete" type="button">Delete</button>
+                        </div>
+                    </div>
+                </form>
             </div>
             {{/each}}
             <div class="ui segment form">
@@ -265,18 +277,26 @@
 </template>
 
 <template name="judging">
-    <div class="ui raised very padded text container segment">
-        <h1>Judging</h1>
-        <p>Stuff ....</p>
-    </div>
     {{#each challenges}}
-        <div class="ui raised very padded text container segment">
+        <div class="ui raised padded text container segment">
             <h2>{{description}}</h2>
         </div>
         <div class="ui three column doubling grid container">
             {{#each hacks}}
                 <div class="column">
-                    {{> hackoverview }}
+                    <a href="{{pathFor 'hack'}}">
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                {{name}}
+                            </div>
+                            <div class="ui secondary segment">
+                                {{team}}
+                            </div>
+                            <div class="ui secondary segment">
+                                {{trim250 description}}
+                            </div>
+                        </div>
+                    </a>
                 </div>
             {{/each}}
         </div>

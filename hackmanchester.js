@@ -210,12 +210,25 @@ if (Meteor.isClient) {
     "submit .new-challenge": function(){
       event.preventDefault();
       var target = event.target;
-      if(target.challenge.value === '' && !Meteor.user().profile.isAdmin) {
+      if(target.challenge.value === '') {
         Meteor.error("Values cannot be null!")
       }
 
       challenges.insert({description:target.challenge.value});
       target.challenge.value = '';
+    },
+    "submit .edit-challenge": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.description.value === '') {
+        Meteor.error("Values cannot be null!")
+      }
+
+      challenges.update({_id:this._id},{description:target.description.value});
+    },
+    "click .delete": function(){
+      event.preventDefault();
+      challenges.remove({_id:this._id});
     }
   });
 
