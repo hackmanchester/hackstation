@@ -12,6 +12,7 @@ Router.map(function(){
   this.route('administration',{
     path:'/admin'
   });
+  this.route('judging');
   this.route('myhacks',{
     path: '/hacks/my'
   });
@@ -24,23 +25,28 @@ Router.map(function(){
 });
 
 var hacks = new Mongo.Collection("hacks");
+var challenges = new Mongo.Collection("challenges");
 
 if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
-  UI.registerHelper('trim250', function(context, options){
+  UI.registerHelper('trim250', function(context){
     if(context){
       return context.toString().substring(0, 250) + "...";
     }
   });
 
-  UI.registerHelper('isJudge', function(context, options){
+  UI.registerHelper('isJudge', function(){
     return Meteor.user().profile.isJudge;
   });
 
-  UI.registerHelper('isAdmin', function(context, options){
+  UI.registerHelper('isAdmin', function(){
     return Meteor.user().profile.isAdmin;
+  });
+
+  UI.registerHelper('challenges', function(){
+    return challenges.find();
   });
 
   Template.navigation.helpers({
@@ -85,7 +91,7 @@ if (Meteor.isClient) {
   });
 
   Template.hack.events({
-    "submit .edit-hack": function(){
+    "submit .edit-hack": function(event, template){
       event.preventDefault();
 
       var target = event.target;
@@ -93,11 +99,18 @@ if (Meteor.isClient) {
         Meteor.error("Values cannot be null!")
       }
 
+      var selected = template.findAll( "input[type=checkbox]:checked");
+
+      var challenges = _.map(selected, function(item) {
+        return item.defaultValue;
+      });
+
       hacks.update(this._id,{
         $set: {
           name: target.name.value,
           team: target.team.value,
-          description: target.description.value
+          description: target.description.value,
+          challenges:challenges
         }
       });
       Router.go('myhacks');
@@ -126,6 +139,13 @@ if (Meteor.isClient) {
   Template.hackoverview.helpers({
     myHack: function(){
       return this.owner === Meteor.userId();
+    },
+    enteredChallenges: function(){
+      if(this.challenges === undefined){
+        return null;
+      }
+
+      return challenges.find({_id:{$in:this.challenges}});
     }
   });
 
@@ -152,6 +172,20 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.modifyentry.helpers({
+    myChallenges: function(){
+      var chals = this.challenges;
+      return challenges.find().map(function(c){
+        var entered = chals.indexOf(c._id) > -1;
+        return {
+          description: c.description,
+          _id: c._id,
+          entered:entered
+        }
+      });
+    }
+  });
+
   Template.myhacks.helpers({
     hacks: function() {
       return hacks.find({owner:Meteor.userId()});
@@ -172,6 +206,23 @@ if (Meteor.isClient) {
     "click .toggle-isadmin": function () {
       event.preventDefault();
       Meteor.call('setAdmin', this._id, !this.profile.isAdmin);
+    },
+    "submit .new-challenge": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.challenge.value === '' && !Meteor.user().profile.isAdmin) {
+        Meteor.error("Values cannot be null!")
+      }
+
+      challenges.insert({description:target.challenge.value});
+      target.challenge.value = '';
+    }
+  });
+
+  Template.judging.helpers({
+    hacks: function(){
+      var challengeId = this._id;
+      return hacks.find({challenges:{$in:[challengeId]}});
     }
   });
 }

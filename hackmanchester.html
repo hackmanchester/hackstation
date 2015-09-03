@@ -19,7 +19,7 @@
         {{/unless}}
         <div class="right menu">
             {{#if isJudge}}
-                <a class="item {{isActive 'judgingoverview'}}" href="{{pathFor route='judgingoverview'}}">Judging</a>
+                <a class="item {{isActive 'judging'}}" href="{{pathFor route='judging'}}">Judging</a>
             {{/if}}
             {{#if isAdmin}}
                 <a class="item {{isActive 'administration'}}" href="{{pathFor route='administration'}}">Admin</a>
@@ -62,7 +62,7 @@
         {{/unless}}
         {{#if currentUser}}
             <form class="new-hack">
-                {{> modifyEntry }}
+                {{> modifyentry }}
             </form>
         {{/if}}
     </div>
@@ -87,7 +87,7 @@
         {{/unless}}
         {{#if currentUser}}
             <form class="new-hack">
-                {{> modifyEntry }}
+                {{> modifyentry }}
             </form>
         {{/if}}
     </div>
@@ -100,6 +100,14 @@
         </div>
         <div class="ui secondary segment">
             {{team}}
+        </div>
+        <div class="ui secondary segment">
+            Challenges:
+            <ul>
+            {{#each enteredChallenges}}
+                <li>{{description}}</li>
+            {{/each}}
+            </ul>
         </div>
         <div class="ui secondary segment">
             {{trim250 description}}
@@ -132,7 +140,7 @@
     {{/unless}}
     {{#if myHack}}
         <form class="edit-hack">
-            {{> modifyEntry }}
+            {{> modifyentry }}
         </form>
     {{/if}}
     {{#if isJudge}}
@@ -169,7 +177,7 @@
     </div>
 </template>
 
-<template name="modifyEntry">
+<template name="modifyentry">
     <div class="ui form">
         <div class="two fields">
             <div class="field">
@@ -181,6 +189,14 @@
                 <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
             </div>
         </div>
+        {{#each myChallenges}}
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" name="challenges" checked={{entered}} value="{{_id}}" tabindex="0" />
+                <label>{{description}}</label>
+            </div>
+        </div>
+        {{/each}}
         <div class="field">
             <label for="description">Description:</label>
             <input type="text" name="description" placeholder="Description ..." value="{{description}}" />
@@ -191,6 +207,24 @@
 
 <template name="administration">
     <div class="ui raised very padded text container">
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Challenges</h2>
+            </div>
+            {{#each challenges}}
+            <div class="ui segment secondary">
+                <p>{{description}}</p>
+            </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-challenge">
+                    <div class="field">
+                        <input type="text" name="challenge" placeholder="Add a new challenge ..." value="{{challenge}}" />
+                    </div>
+                    <button class="ui button" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
         <div class="ui segments">
             <div class="ui segment">
                 <h2>Users</h2>
@@ -228,4 +262,24 @@
             </tbody>
         </table>
     </div>
+</template>
+
+<template name="judging">
+    <div class="ui raised very padded text container segment">
+        <h1>Judging</h1>
+        <p>Stuff ....</p>
+    </div>
+    {{#each challenges}}
+        <div class="ui raised very padded text container segment">
+            <h2>{{description}}</h2>
+        </div>
+        <div class="ui three column doubling grid container">
+            {{#each hacks}}
+                <div class="column">
+                    {{> hackoverview }}
+                </div>
+            {{/each}}
+        </div>
+    {{/each}}
+
 </template>
