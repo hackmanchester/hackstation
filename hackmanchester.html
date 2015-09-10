@@ -44,11 +44,7 @@
     </div>
 </template>
 
-<template name="hacks">
-    <div class="ui raised very padded text container segment">
-        <h1>Hacks!</h1>
-        <p>How are you and your competition doing?</p>
-    </div>
+<template name="showhacks">
     <div class="ui three column doubling grid container">
         {{#each hacks}}
             <div class="column">
@@ -57,42 +53,33 @@
         {{/each}}
     </div>
     {{#unless isJudge}}
-    <div class="ui raised very padded text container segment">
-        <h2>Want to submit a new hack?</h2>
-        {{#unless currentUser}}
-            You are not currently logged in!
-        {{/unless}}
-        {{#if currentUser}}
-            <form class="new-hack">
-                {{> modifyentry }}
-            </form>
-        {{/if}}
-    </div>
+        <div class="ui raised very padded text container segment">
+            <h2>Want to submit a new hack?</h2>
+            {{#unless currentUser}}
+                You are not currently logged in!
+            {{/unless}}
+            {{#if currentUser}}
+                <form class="new-hack">
+                    {{> entry }}
+                </form>
+            {{/if}}
+        </div>
     {{/unless}}
+</template>
+
+<template name="allhacks">
+    <div class="ui raised very padded text container segment">
+        <h1>Hacks!</h1>
+        <p>How are you and your competition doing?</p>
+    </div>
+    {{> showhacks .. }}
 </template>
 
 <template name="myhacks">
     <div class="ui raised very padded text container segment">
         <h1>Your Hacks!</h1>
     </div>
-    <div class="ui three column doubling grid container">
-        {{#each hacks}}
-            <div class="column">
-                {{> hackoverview }}
-            </div>
-        {{/each}}
-    </div>
-    <div class="ui raised very padded text container segment">
-        <h2>Want to submit a new hack?</h2>
-        {{#unless currentUser}}
-            You are not currently logged in!
-        {{/unless}}
-        {{#if currentUser}}
-            <form class="new-hack">
-                {{> modifyentry }}
-            </form>
-        {{/if}}
-    </div>
+    {{> showhacks .. }}
 </template>
 
 <template name="hackoverview">
@@ -142,7 +129,7 @@
     {{/unless}}
     {{#if myHack}}
         <form class="edit-hack">
-            {{> modifyentry }}
+            {{> entry }}
         </form>
     {{/if}}
     {{#if isJudge}}
@@ -179,7 +166,7 @@
     </div>
 </template>
 
-<template name="modifyentry">
+<template name="entry">
     <div class="ui form">
         <div class="two fields">
             <div class="field">

@@ -8,14 +8,23 @@ Router.map(function(){
   this.route('home',{
     path: '/'
   });
-  this.route('hacks');
+  this.route('hacks',{
+    template:'allhacks',
+    data: function(){
+      return {hacks: hacks.find({})};
+    }
+  });
+  this.route('myhacks',{
+    path: '/hacks/my',
+    template: 'myhacks',
+    data: function() {
+      return {hacks: hacks.find({owner:Meteor.userId()})};
+    }
+  });
   this.route('administration',{
     path:'/admin'
   });
   this.route('judging');
-  this.route('myhacks',{
-    path: '/hacks/my'
-  });
   this.route('hack', {
     path: '/hack/:_id',
     data: function(){
@@ -61,14 +70,8 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.hacks.helpers({
-    hacks: function(){
-      return hacks.find({});
-    }
-  });
-
-  Template.hacks.events({
-    "submit .new-hack": function(){
+  Template.showhacks.events({
+    "submit .new-hack": function(event, template){
       event.preventDefault();
 
       var target = event.target;
@@ -76,13 +79,20 @@ if (Meteor.isClient) {
         Meteor.error("Values cannot be null!")
       }
 
+      var selected = template.findAll( "input[type=checkbox]:checked");
+
+      var challenges = _.map(selected, function(item) {
+        return item.defaultValue;
+      });
+
       hacks.insert({
         name:target.name.value,
         team:target.team.value,
         description:target.description.value,
         owner:Meteor.userId(),
         created:new Date(),
-        judgements: []
+        judgements: [],
+        challenges:challenges
       });
       target.name.value = '';
       target.team.value = '';
@@ -172,9 +182,9 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.modifyentry.helpers({
+  Template.entry.helpers({
     myChallenges: function(){
-      var chals = this.challenges;
+      var chals = this.challenges || [];
       return challenges.find().map(function(c){
         var entered = chals.indexOf(c._id) > -1;
         return {
@@ -183,12 +193,6 @@ if (Meteor.isClient) {
           entered:entered
         }
       });
-    }
-  });
-
-  Template.myhacks.helpers({
-    hacks: function() {
-      return hacks.find({owner:Meteor.userId()});
     }
   });
 
