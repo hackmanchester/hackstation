@@ -1,3 +1,7 @@
+var hacks = new Mongo.Collection("hacks");
+var challenges = new Mongo.Collection("challenges");
+var teams = new Mongo.Collection("teams");
+
 Router.configure({
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound',
@@ -21,8 +25,16 @@ Router.map(function(){
       return {hacks: hacks.find({owner:Meteor.userId()})};
     }
   });
+  this.route('teams',{
+    data: function() {
+      return {teams: teams.find({})};
+    }
+  });
   this.route('administration',{
-    path:'/admin'
+    path:'/admin',
+    data: function(){
+      return { users: Meteor.users.find({})};
+    }
   });
   this.route('judging');
   this.route('hack', {
@@ -32,9 +44,6 @@ Router.map(function(){
     }
   });
 });
-
-var hacks = new Mongo.Collection("hacks");
-var challenges = new Mongo.Collection("challenges");
 
 if (Meteor.isClient) {
   // counter starts at 0
@@ -193,12 +202,6 @@ if (Meteor.isClient) {
           entered:entered
         }
       });
-    }
-  });
-
-  Template.administration.helpers({
-    users: function(){
-      return Meteor.users.find({});
     }
   });
 

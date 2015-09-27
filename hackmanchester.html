@@ -17,6 +17,7 @@
         <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}">My Hacks</a>
         {{/if}}
         {{/unless}}
+        <a class="item {{isActive 'teams'}}" href="{{pathFor route='teams'}}">Teams</a>
         <div class="right menu">
             {{#if isJudge}}
                 <a class="item {{isActive 'judging'}}" href="{{pathFor route='judging'}}">Judging</a>
@@ -191,6 +192,35 @@
             <input type="text" name="description" placeholder="Description ..." value="{{description}}" />
         </div>
         <button class="ui button" type="submit">Save</button>
+    </div>
+</template>
+
+<template name="teams">
+    <div class="ui raised very padded text container segment">
+        <h1>Teams</h1>
+    </div>
+    <div class="ui three column doubling grid container">
+        {{#each teams}}
+            <div class="ui column">
+                {{> team }}
+            </div>
+        {{/each}}
+    </div>
+</template>
+
+<template name="team">
+    <div class="ui segments">
+        <div class="ui segment">
+            {{name}}
+        </div>
+        <div class="ui secondary segment">
+            Members:
+            <ul>
+                {{#each members}}
+                    <li>{{name}}</li>
+                {{/each}}
+            </ul>
+        </div>
     </div>
 </template>
 
