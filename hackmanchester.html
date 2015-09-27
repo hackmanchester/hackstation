@@ -18,6 +18,7 @@
         {{/if}}
         {{/unless}}
         <a class="item {{isActive 'teams'}}" href="{{pathFor route='teams'}}">Teams</a>
+        <a class="item {{isActive 'myteam'}}" href="{{pathFor route='myteam'}}">My Team</a>
         <div class="right menu">
             {{#if isJudge}}
                 <a class="item {{isActive 'judging'}}" href="{{pathFor route='judging'}}">Judging</a>
@@ -60,9 +61,14 @@
                 You are not currently logged in!
             {{/unless}}
             {{#if currentUser}}
-                <form class="new-hack">
-                    {{> entry }}
-                </form>
+                {{#unless currentUser/profile/team}}
+                    You are not in a team yet!
+                {{/unless}}
+                {{#if currentUser/profile/team}}
+                    <form class="new-hack">
+                        {{> entry }}
+                    </form>
+                {{/if}}
             {{/if}}
         </div>
     {{/unless}}
@@ -208,6 +214,10 @@
     </div>
 </template>
 
+<template name="myteam">
+    {{info}}
+</template>
+
 <template name="team">
     <div class="ui segments">
         <div class="ui segment">
@@ -217,7 +227,7 @@
             Members:
             <ul>
                 {{#each members}}
-                    <li>{{name}}</li>
+                    <li>{{profile/name}}</li>
                 {{/each}}
             </ul>
         </div>

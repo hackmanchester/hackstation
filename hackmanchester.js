@@ -27,7 +27,20 @@ Router.map(function(){
   });
   this.route('teams',{
     data: function() {
-      return {teams: teams.find({})};
+      var mapped = teams.find({}).map(function(t){
+        var members = _.map(t.members, function(m){
+          return Meteor.users.findOne({_id:m});
+        });
+
+        return {name: t.name, members:members};
+      });
+
+      return {teams:mapped};
+    }
+  });
+  this.route('myteam',{
+    data: function(){
+      return {info:Meteor.user().profile.team};
     }
   });
   this.route('administration',{
