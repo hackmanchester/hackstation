@@ -32,7 +32,7 @@ Router.map(function(){
           return Meteor.users.findOne({_id:m});
         });
 
-        return {name: t.name, members:members};
+        return {_id: t._id,name: t.name, members:members,hacks:hacks.find({team: t._id})};
       });
 
       return {teams:mapped};
@@ -40,7 +40,13 @@ Router.map(function(){
   });
   this.route('myteam',{
     data: function(){
-      return {info:Meteor.user().profile.team};
+      var myteam = teams.findOne({_id:Meteor.user().profile.team});
+
+      var members = _.map(myteam.members, function(m){
+        return Meteor.users.findOne({_id:m});
+      });
+
+      return {_id:myteam._id,name:myteam.name, members:members, hacks:hacks.find({team: myteam._id})};
     }
   });
   this.route('administration',{
@@ -62,6 +68,10 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
+  Accounts.ui.config({
+    passwordSignupFields: 'USERNAME_AND_EMAIL'
+  });
+
   UI.registerHelper('trim250', function(context){
     if(context){
       return context.toString().substring(0, 250) + "...";
@@ -78,6 +88,10 @@ if (Meteor.isClient) {
 
   UI.registerHelper('challenges', function(){
     return challenges.find();
+  });
+
+  UI.registerHelper('teamname', function(context){
+    return teams.findOne({_id:context}).name;
   });
 
   Template.navigation.helpers({
@@ -109,7 +123,7 @@ if (Meteor.isClient) {
 
       hacks.insert({
         name:target.name.value,
-        team:target.team.value,
+        team:Meteor.user().profile.team,
         description:target.description.value,
         owner:Meteor.userId(),
         created:new Date(),
@@ -117,7 +131,6 @@ if (Meteor.isClient) {
         challenges:challenges
       });
       target.name.value = '';
-      target.team.value = '';
       target.description.value = '';
     }
   });
@@ -140,7 +153,6 @@ if (Meteor.isClient) {
       hacks.update(this._id,{
         $set: {
           name: target.name.value,
-          team: target.team.value,
           description: target.description.value,
           challenges:challenges
         }
@@ -151,7 +163,7 @@ if (Meteor.isClient) {
       event.preventDefault();
 
       var target = event.target;
-      if(target.judgement.value === '' && !Meteor.user().profile.isJudge) {
+      if(target.judgement.value === '' && !Meteor.user().isJudge) {
         Meteor.error("Values cannot be null!")
       }
 
@@ -188,17 +200,10 @@ if (Meteor.isClient) {
     judgesComments: function(){
       return this.judgements.map(function(j){
         var judge = Meteor.users.findOne({_id: j.judge});
-        var name = '';
-        if(judge.profile !== undefined && judge.profile.name !== undefined) {
-          name = judge.profile.name;
-        }
-        else {
-          name = 'No name specified!';
-        }
         return {
           judgement: j.judgement,
           created: moment(j.created).format('DD-MM-YYYY hh:mm'),
-          judge: name
+          judge: judge.username
         }
       });
     }
@@ -218,14 +223,46 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.team.events({
+    "submit .join-team": function(){
+      event.preventDefault();
+
+      teams.update({_id:this._id},{$push:{members:Meteor.userId()}});
+
+      Meteor.users.update(Meteor.userId(), { $set: {"profile.team": this._id} });
+    }
+  });
+
+  Template.myteam.events({
+    "submit .add-team": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.name.value === '') {
+        Meteor.error("Values cannot be null!")
+      }
+
+      var team = teams.insert({name:target.name.value,members:[Meteor.userId()]});
+      target.name.value = '';
+
+      Meteor.users.update(Meteor.userId(), { $set: {"profile.team": team} });
+    },
+    "submit .leave-team": function(){
+      event.preventDefault();
+
+      teams.update({_id:this._id},{$pull:{members:Meteor.userId()}});
+      Meteor.users.update(Meteor.userId(), { $unset: {"profile.team": ""} });
+      Router.go('teams');
+    }
+  });
+
   Template.administration.events({
     "click .toggle-isjudge": function () {
       event.preventDefault();
-      Meteor.call('setJudge', this._id, !this.profile.isJudge);
+      Meteor.call('setJudge', this._id, !this.isJudge);
     },
     "click .toggle-isadmin": function () {
       event.preventDefault();
-      Meteor.call('setAdmin', this._id, !this.profile.isAdmin);
+      Meteor.call('setAdmin', this._id, !this.isAdmin);
     },
     "submit .new-challenge": function(){
       event.preventDefault();
@@ -267,18 +304,10 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     setJudge: function(userId, isJudge) {
-      Meteor.users.update(userId, {
-        $set: {
-          "profile.isJudge": isJudge
-        }
-      });
+      Meteor.users.update(userId, {$set: {"profile.isJudge": isJudge}});
     },
     setAdmin: function(userId, isAdmin) {
-      Meteor.users.update(userId, {
-        $set: {
-          "profile.isAdmin": isAdmin
-        }
-      });
+      Meteor.users.update(userId, {$set: {"profile.isAdmin": isAdmin}});
     }
   });
 }

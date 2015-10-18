@@ -13,12 +13,20 @@
         <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}">Home</a>
         <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}">All Hacks</a>
         {{#unless isJudge}}
+        {{#unless isAdmin}}
         {{#if currentUser}}
         <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}">My Hacks</a>
         {{/if}}
         {{/unless}}
+        {{/unless}}
         <a class="item {{isActive 'teams'}}" href="{{pathFor route='teams'}}">Teams</a>
+        {{#unless isJudge}}
+        {{#unless isAdmin}}
+        {{#if currentUser}}
         <a class="item {{isActive 'myteam'}}" href="{{pathFor route='myteam'}}">My Team</a>
+        {{/if}}
+        {{/unless}}
+        {{/unless}}
         <div class="right menu">
             {{#if isJudge}}
                 <a class="item {{isActive 'judging'}}" href="{{pathFor route='judging'}}">Judging</a>
@@ -55,6 +63,7 @@
         {{/each}}
     </div>
     {{#unless isJudge}}
+    {{#unless isAdmin}}
         <div class="ui raised very padded text container segment">
             <h2>Want to submit a new hack?</h2>
             {{#unless currentUser}}
@@ -71,6 +80,7 @@
                 {{/if}}
             {{/if}}
         </div>
+    {{/unless}}
     {{/unless}}
 </template>
 
@@ -95,7 +105,7 @@
             {{name}}
         </div>
         <div class="ui secondary segment">
-            {{team}}
+            {{teamname team}}
         </div>
         <div class="ui secondary segment">
             Challenges:
@@ -127,7 +137,7 @@
                 <h1>{{name}}</h1>
             </div>
             <div class="ui secondary segment">
-                <h2>{{team}}</h2>
+                <h2>{{teamname team}}</h2>
             </div>
             <div class="ui secondary segment">
                 <p>{{description}}</p>
@@ -175,15 +185,9 @@
 
 <template name="entry">
     <div class="ui form">
-        <div class="two fields">
-            <div class="field">
-                <label for="team">Team:</label>
-                <input type="text" name="team" placeholder="Team name ..." value="{{team}}" />
-            </div>
-            <div class="field">
-                <label for="name">Name:</label>
-                <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
-            </div>
+        <div class="field">
+            <label for="name">Name:</label>
+            <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
         </div>
         {{#each myChallenges}}
         <div class="field">
@@ -215,7 +219,55 @@
 </template>
 
 <template name="myteam">
-    {{info}}
+    {{#if currentUser}}
+    {{#unless name}}
+        <div class="ui raised very padded text container">
+            <div class="ui segment form">
+                <h2>Want to create a team?</h2>
+                <p>You don't currently belong to a team. Either create one here or find a team on the <a class="item" href="{{pathFor route='teams'}}">Teams</a> page.</p>
+                <form class="add-team">
+                    <div class="field">
+                        <input type="text" name="name" placeholder="Team name" value="{{team/name}}" />
+                    </div>
+                    <div class="field">
+                        <button class="ui button" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{/unless}}
+    {{#if name}}
+    <div class="ui raised very padded text container">
+        <div class="ui segment">
+            <h2>{{name}}</h2>
+            Members:
+            <ul>
+                {{#each members}}
+                    <li>{{username}}</li>
+                {{/each}}
+            </ul>
+            Hacks:
+            <ul>
+                {{#each hacks}}
+                    <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
+                {{/each}}
+            </ul>
+            <p>Tired of this lot? Team letting you down? Got a better idea?</p>
+            <form class="leave-team">
+                <div class="field">
+                    <button class="ui button" type="submit">Leave team</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{/if}}
+    {{/if}}
+    {{#unless currentUser}}
+    <div class="ui raised very padded text container segment">
+        <h2>Want to be part of a hack?</h2>
+        <p>You need to sign in or create an account to be part of a team.</p>
+    </div>
+    {{/unless}}
 </template>
 
 <template name="team">
@@ -227,10 +279,29 @@
             Members:
             <ul>
                 {{#each members}}
-                    <li>{{profile/name}}</li>
+                    <li>{{username}}</li>
+                {{/each}}
+            </ul>
+            Hacks:
+            <ul>
+                {{#each hacks}}
+                    <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
                 {{/each}}
             </ul>
         </div>
+        {{#if currentUser}}
+        {{#unless isJudge}}
+        {{#unless isAdmin}}
+        {{#unless currentUser/profile/team}}
+        <div class="ui segment">
+            <form class="join-team">
+                <button class="ui button" type="submit">Join this team</button>
+            </form>
+        </div>
+        {{/unless}}
+        {{/unless}}
+        {{/unless}}
+        {{/if}}
     </div>
 </template>
 
@@ -273,6 +344,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Id</th>
                     <th>Judge</th>
                     <th>Admin</th>
                 </tr>
@@ -281,14 +353,10 @@
             {{#each users}}
                 <tr>
                     <td>
-                        {{profile/name}}
-                        {{#if profile/name}}
-                            (
-                        {{/if}}
+                        {{username}}
+                    </td>
+                    <td>
                         {{_id}}
-                        {{#if profile/name}}
-                            )
-                        {{/if}}
                     </td>
                     <td>
                         <input type="checkbox" checked="{{profile/isJudge}}" class="toggle-isjudge" />
