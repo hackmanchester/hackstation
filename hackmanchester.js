@@ -32,13 +32,26 @@ Router.map(function(){
           return Meteor.users.findOne({_id:m});
         });
 
-        return {_id: t._id,name: t.name, members:members,hacks:hacks.find({team: t._id})};
+        return {_id: t._id,name: t.name, members:members,hacks:hacks.find({team: t._id}),table: t.table};
       });
 
       return {teams:mapped};
     }
   });
+  this.route('team', {
+    path:'/team/:_id',
+    data: function(){
+      var myteam = teams.findOne({_id:this.params._id});
+
+      var members = _.map(myteam.members, function(m){
+        return Meteor.users.findOne({_id:m});
+      });
+
+      return {_id:myteam._id,name:myteam.name, members:members, hacks:hacks.find({team: myteam._id}),table: myteam.table};
+    }
+  });
   this.route('myteam',{
+    template:'team',
     data: function(){
       var myteam = teams.findOne({_id:Meteor.user().profile.team});
 
@@ -46,7 +59,7 @@ Router.map(function(){
         return Meteor.users.findOne({_id:m});
       });
 
-      return {_id:myteam._id,name:myteam.name, members:members, hacks:hacks.find({team: myteam._id})};
+      return {_id:myteam._id,name:myteam.name, members:members, hacks:hacks.find({team: myteam._id}),table: myteam.table};
     }
   });
   this.route('administration',{
@@ -94,6 +107,10 @@ if (Meteor.isClient) {
     return teams.findOne({_id:context}).name;
   });
 
+  UI.registerHelper('ismyteam', function(context){
+    return Meteor.user().profile.team === context;
+  });
+
   Template.navigation.helpers({
     isActive: function(value){
       return Router.current().route.getName() == value ? 'active' : '';
@@ -125,6 +142,7 @@ if (Meteor.isClient) {
         name:target.name.value,
         team:Meteor.user().profile.team,
         description:target.description.value,
+        youtube:target.youtube.value,
         owner:Meteor.userId(),
         created:new Date(),
         judgements: [],
@@ -132,6 +150,8 @@ if (Meteor.isClient) {
       });
       target.name.value = '';
       target.description.value = '';
+      target.youtube.value = '';
+      target.table.value = '';
     }
   });
 
@@ -154,6 +174,7 @@ if (Meteor.isClient) {
         $set: {
           name: target.name.value,
           description: target.description.value,
+          youtube:target.youtube.value,
           challenges:challenges
         }
       });
@@ -223,7 +244,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.team.events({
+  Template.teamoverview.events({
     "submit .join-team": function(){
       event.preventDefault();
 
@@ -233,7 +254,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.myteam.events({
+  Template.team.events({
     "submit .add-team": function(){
       event.preventDefault();
       var target = event.target;
@@ -241,10 +262,28 @@ if (Meteor.isClient) {
         Meteor.error("Values cannot be null!")
       }
 
-      var team = teams.insert({name:target.name.value,members:[Meteor.userId()]});
+      var team = teams.insert({
+        name:target.name.value,
+        members:[Meteor.userId()],
+        table:target.table.value
+      });
       target.name.value = '';
+      target.table.value = '';
 
       Meteor.users.update(Meteor.userId(), { $set: {"profile.team": team} });
+    },
+    "submit .edit-team": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.name.value === '') {
+        Meteor.error("Values cannot be null!")
+      }
+
+      teams.update({_id:this._id},{$set:{
+        name:target.name.value,
+        table:target.table.value
+      }});
+      Router.go('teams');
     },
     "submit .leave-team": function(){
       event.preventDefault();
