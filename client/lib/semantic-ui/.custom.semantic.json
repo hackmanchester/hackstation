@@ -53,7 +53,7 @@
   },
   "themes": {
     "amazon": false,
-    "basic": false,
+    "basic": true,
     "bookish": true,
     "bootstrap3": false,
     "chubby": false,
@@ -63,7 +63,7 @@
     "duo": false,
     "fixed": false,
     "flat": false,
-    "github": false,
+    "github": true,
     "gmail": false,
     "instagram": false,
     "material": false,

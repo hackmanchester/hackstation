@@ -1,6 +1,7 @@
 var hacks = new Mongo.Collection("hacks");
 var challenges = new Mongo.Collection("challenges");
 var teams = new Mongo.Collection("teams");
+var tech = new Mongo.Collection("tech");
 
 Router.configure({
   loadingTemplate: 'loading',
@@ -101,6 +102,10 @@ if (Meteor.isClient) {
 
   UI.registerHelper('challenges', function(){
     return challenges.find();
+  });
+
+  UI.registerHelper('technologies', function(){
+    return tech.find();
   });
 
   UI.registerHelper('teamname', function(context){
@@ -244,6 +249,12 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.entry.onRendered(
+      function(){
+      $('.dropdown').dropdown({ transition: 'drop' });
+    }
+  );
+
   Template.teamoverview.events({
     "submit .join-team": function(){
       event.preventDefault();
@@ -322,9 +333,33 @@ if (Meteor.isClient) {
 
       challenges.update({_id:this._id},{description:target.description.value});
     },
-    "click .delete": function(){
+    "click .delete-challenge": function(){
       event.preventDefault();
       challenges.remove({_id:this._id});
+    }
+    ,
+    "submit .new-tech": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.tech.value === '') {
+        Meteor.error("Values cannot be null!")
+      }
+
+      tech.insert({description:target.tech.value});
+      target.tech.value = '';
+    },
+    "submit .edit-tech": function(){
+      event.preventDefault();
+      var target = event.target;
+      if(target.description.value === '') {
+        Meteor.error("Values cannot be null!")
+      }
+
+      tech.update({_id:this._id},{description:target.description.value});
+    },
+    "click .delete-tech": function(){
+      event.preventDefault();
+      tech.remove({_id:this._id});
     }
   });
 

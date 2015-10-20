@@ -202,6 +202,14 @@
             <input type="text" name="description" placeholder="Description ..." value="{{description}}" />
         </div>
         <div class="field">
+            <select class="ui fluid search dropdown" multiple="">
+                <option value="">Tech</option>
+                {{#each technologies}}
+                    <option value="{{_id}}">{{description}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="field">
             <label for="description">Youtube URL:</label>
             <input type="text" name="youtube" placeholder="Youtube URL ..." value="{{youtube}}" />
         </div>
@@ -348,7 +356,7 @@
                         </div>
                         <div class="field">
                             <button class="ui button" type="submit">Save</button>
-                            <button class="ui button delete" type="button">Delete</button>
+                            <button class="ui button delete-challenge" type="button">Delete</button>
                         </div>
                     </div>
                 </form>
@@ -396,6 +404,34 @@
             {{/each}}
             </tbody>
         </table>
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Tech</h2>
+            </div>
+            {{#each technologies}}
+                <div class="ui segment secondary form">
+                    <form class="edit-tech">
+                        <div class="two fields">
+                            <div class="field">
+                                <input type="text" name="description" placeholder="Tech name ..." value="{{description}}" />
+                            </div>
+                            <div class="field">
+                                <button class="ui button" type="submit">Save</button>
+                                <button class="ui button delete-tech" type="button">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-tech">
+                    <div class="field">
+                        <input type="text" name="tech" placeholder="Add a new tech ..." value="{{tech}}" />
+                    </div>
+                    <button class="ui button" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
