@@ -55,12 +55,12 @@
 </template>
 
 <template name="showhacks">
-    <div class="ui three column doubling grid container">
+    <div class="ui container">
+        <div class="ui three cards">
         {{#each hacks}}
-            <div class="column">
                 {{> hackoverview }}
-            </div>
         {{/each}}
+        </div>
     </div>
     {{#unless isJudge}}
     {{#unless isAdmin}}
@@ -100,26 +100,29 @@
 </template>
 
 <template name="hackoverview">
-    <div class="ui segments">
-        <div class="ui segment">
-            {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
-        </div>
-        <div class="ui secondary segment">
-            Challenges:
-            <ul>
-            {{#each enteredChallenges}}
-                <li>{{description}}</li>
-            {{/each}}
-            </ul>
-            {{trim250 description}}
-            <p>
-            {{#if myHack }}
-                <a href="{{pathFor 'hack'}}">Edit</a>
-            {{/if}}
-            {{#unless myHack }}
-                <a href="{{pathFor 'hack'}}">View</a>
-            {{/unless}}
-            </p>
+    <div class="ui card">
+        <div class="content">
+            <div class="header">
+                {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+            </div>
+            <div class="meta">
+                <ul>
+                    {{#each enteredChallenges}}
+                        <li>{{description}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="description">
+                {{trim250 description}}
+                <p>
+                    {{#if myHack }}
+                        <a href="{{pathFor 'hack'}}">Edit</a>
+                    {{/if}}
+                    {{#unless myHack }}
+                        <a href="{{pathFor 'hack'}}">View</a>
+                    {{/unless}}
+                </p>
+            </div>
         </div>
     </div>
 </template>
@@ -229,12 +232,12 @@
     <div class="ui raised very padded text container segment">
         <h1>Teams</h1>
     </div>
-    <div class="ui three column doubling grid container">
+    <div class="ui container">
+        <div class="ui three cards">
         {{#each teams}}
-            <div class="ui column">
-                {{> teamoverview }}
-            </div>
+            {{> teamoverview }}
         {{/each}}
+        </div>
     </div>
 </template>
 
@@ -312,32 +315,34 @@
 </template>
 
 <template name="teamoverview">
-    <div class="ui segments">
-        <div class="ui segment">
-            <a href="{{pathFor 'team' }}">{{name}}</a>
+    <div class="ui card">
+        <div class="content">
+            <div class="header">
+                <a href="{{pathFor 'team' }}">{{name}}</a>
+            </div>
+            <div class="description">
+                Members:
+                <ul>
+                    {{#each members}}
+                        <li>{{username}}</li>
+                    {{/each}}
+                </ul>
+                Hacks:
+                <ul>
+                    {{#each hacks}}
+                        <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
-        <div class="ui secondary segment">
-            Members:
-            <ul>
-                {{#each members}}
-                    <li>{{username}}</li>
-                {{/each}}
-            </ul>
-            Hacks:
-            <ul>
-                {{#each hacks}}
-                    <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
-                {{/each}}
-            </ul>
-        </div>
-        <div class="ui secondary segment">
+        <div class="extra content">
             <p>Find us on table: {{table}}</p>
         </div>
         {{#if currentUser}}
         {{#unless isJudge}}
         {{#unless isAdmin}}
         {{#unless currentUser/profile/team}}
-        <div class="ui segment">
+        <div class="extra content">
             <form class="join-team">
                 <button class="ui button" type="submit">Join this team</button>
             </form>
