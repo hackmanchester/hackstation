@@ -143,6 +143,12 @@ if (Meteor.isClient) {
         return item.defaultValue;
       });
 
+      var selectedtech = template.findAll("div.menu div.active");
+
+      var techchoices = _.map(selectedtech, function(item){
+        return item.attributes["data-value"].value;
+      });
+
       hacks.insert({
         name:target.name.value,
         team:Meteor.user().profile.team,
@@ -151,7 +157,8 @@ if (Meteor.isClient) {
         owner:Meteor.userId(),
         created:new Date(),
         judgements: [],
-        challenges:challenges
+        challenges:challenges,
+        techchoices: techchoices
       });
       target.name.value = '';
       target.description.value = '';
@@ -175,12 +182,19 @@ if (Meteor.isClient) {
         return item.defaultValue;
       });
 
+      var selectedtech = template.findAll("div.menu div.active");
+
+      var techchoices = _.map(selectedtech, function(item){
+        return item.attributes["data-value"].value;
+      });
+
       hacks.update(this._id,{
         $set: {
           name: target.name.value,
           description: target.description.value,
           youtube:target.youtube.value,
-          challenges:challenges
+          challenges:challenges,
+          techchoices: techchoices
         }
       });
       Router.go('myhacks');
@@ -244,6 +258,17 @@ if (Meteor.isClient) {
           description: c.description,
           _id: c._id,
           entered:entered
+        }
+      });
+    },
+    myTechnologies: function(){
+      var techs = this.techchoices || [];
+      return tech.find().map(function(c){
+        var selected = techs.indexOf(c._id) > -1;
+        return {
+          description: c.description,
+          _id: c._id,
+          selected:selected
         }
       });
     }

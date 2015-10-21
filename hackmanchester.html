@@ -204,8 +204,8 @@
         <div class="field">
             <select class="ui fluid search dropdown" multiple="">
                 <option value="">Tech</option>
-                {{#each technologies}}
-                    <option value="{{_id}}">{{description}}</option>
+                {{#each myTechnologies}}
+                    <option value="{{_id}}" selected={{selected}}>{{description}}</option>
                 {{/each}}
             </select>
         </div>
