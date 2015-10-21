@@ -80,16 +80,27 @@ body{
 }
 
 a{
-	color:white;
+	color:#ff1493;
 }
 
 a:visited {
-	color:white;
+	color:#ff1493;
 }
 
 a:hover {
-    color: white;
-    font-weight: bold;
+    color: #ff1493;
+}
+
+.menu a{
+	color:white;
+}
+
+.menu a:visited {
+	color:white;
+}
+
+.menu a:hover {
+    color: #ff1493;
 }
 
 #login-buttons a, .accounts-dialog a{

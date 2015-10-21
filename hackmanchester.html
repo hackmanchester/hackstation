@@ -104,7 +104,7 @@
     <div class="ui card">
         <div class="content">
             <div class="header">
-                {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+                {{name}} (team <a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
             </div>
             <div class="meta">
                 <ul>
@@ -179,7 +179,7 @@
                         <label for="judgement">Add a judgment:</label>
                         <input type="text" name="judgement" placeholder="Add a judgment ..." value="{{judgement}}" />
                     </div>
-                    <button class="ui button" type="submit">Submit</button>
+                    <button class="primary ui button" type="submit">Submit</button>
                 </form>
             </div>
         </div>
@@ -188,44 +188,46 @@
 </template>
 
 <template name="entry">
-    <div class="ui form">
-        <div class="field">
-            <label for="name">Name:</label>
-            <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
-        </div>
-        {{#each myChallenges}}
-        <div class="field">
-            <div class="ui checkbox">
-                <input type="checkbox" name="challenges" checked={{entered}} value="{{_id}}" tabindex="0" />
-                <label>{{description}}</label>
+    <div class="ui segment">
+        <div class="ui form">
+            <div class="field">
+                <label for="name">Name:</label>
+                <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
             </div>
-        </div>
-        {{/each}}
-        <div class="field">
-            <label for="description">Description:</label>
-            <textarea type="text" name="description" placeholder="Description ..." value="{{description}}"></textarea>
-        </div>
-        <div class="field">
-            <label for="technologies">Technologies:</label>
-            <select name="technologies" class="ui fluid search dropdown" multiple="">
-                <option value="">Tech</option>
-                {{#each myTechnologies}}
-                    <option value="{{_id}}" selected={{selected}}>{{description}}</option>
-                {{/each}}
-            </select>
-            <div class="ui right labeled left icon input">
-                <i class="tags icon"></i>
-                <input type="text" name="tag" placeholder="Enter new tags here (you need to click: Add Tag) ...">
-                <a class="ui tag label" id="add-tag">
-                    Add Tag
-                </a>
+            {{#each myChallenges}}
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" name="challenges" checked={{entered}} value="{{_id}}" tabindex="0" />
+                    <label>{{description}}</label>
+                </div>
             </div>
+            {{/each}}
+            <div class="field">
+                <label for="description">Description:</label>
+                <textarea type="text" name="description" placeholder="Description ..." value="{{description}}"></textarea>
+            </div>
+            <div class="field">
+                <label for="technologies">Technologies:</label>
+                <select name="technologies" class="ui fluid search dropdown" multiple="">
+                    <option value="">Tech</option>
+                    {{#each myTechnologies}}
+                        <option value="{{_id}}" selected={{selected}}>{{description}}</option>
+                    {{/each}}
+                </select>
+                <div class="ui right labeled left icon input">
+                    <i class="tags icon"></i>
+                    <input type="text" name="tag" placeholder="Enter new tags here (you need to click: Add Tag) ...">
+                    <a class="ui tag label" id="add-tag">
+                        Add Tag
+                    </a>
+                </div>
+            </div>
+            <div class="field">
+                <label for="description">Youtube URL:</label>
+                <input type="text" name="youtube" placeholder="Youtube URL ..." value="{{youtube}}" />
+            </div>
+            <button class="ui positive button" type="submit">Save</button>
         </div>
-        <div class="field">
-            <label for="description">Youtube URL:</label>
-            <input type="text" name="youtube" placeholder="Youtube URL ..." value="{{youtube}}" />
-        </div>
-        <button class="ui button" type="submit">Save</button>
     </div>
 </template>
 
@@ -252,7 +254,7 @@
         <input type="text" name="table" placeholder="Table number ..." value="{{table}}" />
     </div>
     <div class="field">
-        <button class="ui button" type="submit">Save</button>
+        <button class="ui positive button" type="submit">Save</button>
     </div>
 </template>
 
@@ -299,7 +301,7 @@
             <p>Tired of this lot? Team letting you down? Got a better idea?</p>
             <form class="leave-team">
                 <div class="field">
-                    <button class="ui button" type="submit">Leave team</button>
+                    <button class="ui negative button" type="submit">Leave team</button>
                 </div>
             </form>
             {{/if}}
@@ -319,21 +321,15 @@
     <div class="ui card">
         <div class="content">
             <div class="header">
-                {{name}}
+                <i class="users icon"></i> Team {{name}}
+            </div>
+            <div class="meta">
+                {{#each members}} <i class="user icon"></i> {{username}} {{/each}}
             </div>
             <div class="description">
-                Members:
-                <ul>
-                    {{#each members}}
-                        <li>{{username}}</li>
-                    {{/each}}
-                </ul>
-                Hacks:
-                <ul>
-                    {{#each hacks}}
-                        <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
-                    {{/each}}
-                </ul>
+                {{#each hacks}}
+                    <i class="idea icon"></i> <a href="{{pathFor 'hack'}}">{{name}}</a> <br>
+                {{/each}}
             </div>
         </div>
         <div class="extra content">
@@ -345,7 +341,7 @@
         {{#unless currentUser/profile/team}}
         <div class="extra content">
             <form class="join-team">
-                <button class="ui button" type="submit">Join this team</button>
+                <button class="positive ui button" type="submit">Join this team</button>
             </form>
         </div>
         {{/unless}}
@@ -372,8 +368,8 @@
                             <input type="text" name="description" placeholder="A Challenge" value="{{description}}" />
                         </div>
                         <div class="field">
-                            <button class="ui button" type="submit">Save</button>
-                            <button class="ui button delete-challenge" type="button">Delete</button>
+                            <button class="positive ui button" type="submit">Save</button>
+                            <button class="negative ui button delete-challenge" type="button">Delete</button>
                         </div>
                     </div>
                 </form>
@@ -384,7 +380,7 @@
                     <div class="field">
                         <input type="text" name="challenge" placeholder="Add a new challenge ..." value="{{challenge}}" />
                     </div>
-                    <button class="ui button" type="submit">Save</button>
+                    <button class="positive ui button" type="submit">Save</button>
                 </form>
             </div>
         </div>
@@ -433,8 +429,8 @@
                                 <input type="text" name="description" placeholder="Tech name ..." value="{{description}}" />
                             </div>
                             <div class="field">
-                                <button class="ui button" type="submit">Save</button>
-                                <button class="ui button delete-tech" type="button">Delete</button>
+                                <button class="positive ui button" type="submit">Save</button>
+                                <button class="negative ui button delete-tech" type="button">Delete</button>
                             </div>
                         </div>
                     </form>
@@ -445,7 +441,7 @@
                     <div class="field">
                         <input type="text" name="tech" placeholder="Add a new tech ..." value="{{tech}}" />
                     </div>
-                    <button class="ui button" type="submit">Save</button>
+                    <button class="positive ui button" type="submit">Save</button>
                 </form>
             </div>
         </div>
