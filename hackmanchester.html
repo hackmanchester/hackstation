@@ -45,12 +45,12 @@
     <div class="ui raised padded text container segment">
         <h2 class="ui header">Latest submissions:</h2>
     </div>
-    <div class="ui three column doubling grid container">
+    <div class="ui container">
+        <div class="ui three cards">
         {{#each hacks}}
-            <div class="column">
-                {{> hackoverview }}
-            </div>
+            {{> hackoverview }}
         {{/each}}
+        </div>
     </div>
 </template>
 
