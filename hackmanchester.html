@@ -8,7 +8,7 @@
 </template>
 
 <template name="navigation">
-    <div class="ui pointing menu secondary">
+    <div class="ui inverted menu">    
         <li class="item">{{> loginButtons}}</li>
         <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}">Home</a>
         <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}">All Hacks</a>
@@ -36,12 +36,13 @@
             {{/if}}
         </div>
     </div>
+    <div class="header group">
+        <h1 id="logo"><a href="#"><img src="/images/logo.png" alt="HAC 1: Hack Manchester 2015" width="50%"></a></h1>
+        <h2 class="date"><img src="/images/date.png" alt="24th &dash; 25th October 2015" width="50%"/></h2>
+    </div>
 </template>
 
 <template name="home">
-    <div class="ui raised very padded text container segment">
-        <h1 class="ui header">Welcome to HackManchester!</h1>
-    </div>
     <div class="ui raised padded text container segment">
         <h2 class="ui header">Latest submissions:</h2>
     </div>
