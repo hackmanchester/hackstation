@@ -114,15 +114,15 @@
             </div>
             <div class="description">
                 {{trim250 description}}
-                <p>
-                    {{#if myHack }}
-                        <a href="{{pathFor 'hack'}}">Edit</a>
-                    {{/if}}
-                    {{#unless myHack }}
-                        <a href="{{pathFor 'hack'}}">View</a>
-                    {{/unless}}
-                </p>
             </div>
+        </div>
+        <div class="ui bottom attached button">
+            {{#if myHack }}
+                <a href="{{pathFor 'hack'}}">Edit</a>
+            {{/if}}
+            {{#unless myHack }}
+                <a href="{{pathFor 'hack'}}">View</a>
+            {{/unless}}
         </div>
     </div>
 </template>
@@ -318,7 +318,7 @@
     <div class="ui card">
         <div class="content">
             <div class="header">
-                <a href="{{pathFor 'team' }}">{{name}}</a>
+                {{name}}
             </div>
             <div class="description">
                 Members:
@@ -351,6 +351,9 @@
         {{/unless}}
         {{/unless}}
         {{/if}}
+        <div class="ui bottom attached button">
+            <a href="{{pathFor 'team' }}">View</a>
+        </div>
     </div>
 </template>
 
