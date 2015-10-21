@@ -274,6 +274,19 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.entry.events({
+    "click #add-tag": function(event, template){
+      event.preventDefault();
+
+      var tag = template.find("[name=tag]").value;
+
+      if(tag.length === 0) return;
+
+      Meteor.call("saveTag", tag);
+      template.find("[name=tag]").value = '';
+    }
+  });
+
   Template.entry.onRendered(
       function(){
       $('.dropdown').dropdown({ transition: 'drop' });
@@ -407,6 +420,9 @@ if (Meteor.isServer) {
     },
     setAdmin: function(userId, isAdmin) {
       Meteor.users.update(userId, {$set: {"profile.isAdmin": isAdmin}});
+    },
+    saveTag: function(tag) {
+      tech.upsert({description:tag},{description:tag});
     }
   });
 }
