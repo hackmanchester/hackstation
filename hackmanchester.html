@@ -87,15 +87,26 @@
 
 <template name="allhacks">
     <div class="ui raised very padded text container segment">
-        <h1>Hacks!</h1>
-        <p>How are you and your competition doing?</p>
+        <h2 class="ui header">
+            <i class="lab icon"></i> 
+            <div class="content">
+                Hacks!
+                <div class="sub header">How are you and your competition doing?</div>
+            </div>
+        </h2>
     </div>
     {{> showhacks .. }}
 </template>
 
 <template name="myhacks">
     <div class="ui raised very padded text container segment">
-        <h1>Your Hacks!</h1>
+        <h2 class="ui header">
+            <i class="idea icon"></i> 
+            <div class="content">
+                Your Hacks!
+                <div class="sub header">All your amazing ideas</div>
+            </div>
+        </h2>
     </div>
     {{> showhacks .. }}
 </template>
