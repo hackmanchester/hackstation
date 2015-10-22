@@ -23,7 +23,7 @@ Router.map(function(){
     path: '/hacks/my',
     template: 'myhacks',
     data: function() {
-      return {hacks: hacks.find({owner:Meteor.userId()})};
+      return {hacks: hacks.find({team:Meteor.user().profile.team})};
     }
   });
   this.route('teams',{
@@ -154,7 +154,6 @@ if (Meteor.isClient) {
         team:Meteor.user().profile.team,
         description:target.description.value,
         youtube:target.youtube.value,
-        owner:Meteor.userId(),
         created:new Date(),
         judgements: [],
         challenges:challenges,
@@ -222,7 +221,7 @@ if (Meteor.isClient) {
 
   Template.hackoverview.helpers({
     myHack: function(){
-      return this.owner === Meteor.userId();
+      return this.team === Meteor.user().profile.team;
     },
     enteredChallenges: function(){
       if(this.challenges === undefined){
@@ -235,7 +234,7 @@ if (Meteor.isClient) {
 
   Template.hack.helpers({
     myHack: function(){
-      return this.owner === Meteor.userId();
+      return this.team === Meteor.user().profile.team;
     },
     judgesComments: function(){
       return this.judgements.map(function(j){
