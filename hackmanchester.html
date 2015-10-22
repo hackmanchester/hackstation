@@ -169,6 +169,15 @@
                 </div>
             {{/if}}
         </div>
+        {{#if isAdmin}}
+            <div class="ui segment center aligned">
+                <form class="delete-hack">
+                    <div class="field">
+                        <button class="ui negative button" type="submit" onclick="javascript:return confirm('Are you sure?');">Delete this hack?</button>
+                    </div>
+                </form>
+            </div>
+        {{/if}}
     {{/unless}}
     {{#if myHack}}
         <form class="edit-hack">
@@ -334,6 +343,15 @@
                 </div>
             {{/if}}
         </div>
+        {{#if isAdmin}}
+        <div class="ui segment center aligned">
+            <form class="delete-team">
+                <div class="field">
+                    <button class="ui negative button" type="submit" onclick="javascript:return confirm('Are you sure?');">Delete this team?</button>
+                </div>
+            </form>
+        </div>
+        {{/if}}
     </div>
     {{/if}}
     {{/if}}

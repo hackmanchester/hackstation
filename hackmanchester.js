@@ -250,6 +250,14 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.hack.events({
+    "submit .delete-hack": function(){
+      event.preventDefault();
+      hacks.remove({_id:this._id});
+      Router.go('hacks');
+    }
+  })
+
   Template.entry.helpers({
     myChallenges: function(){
       var chals = this.challenges || [];
@@ -341,17 +349,22 @@ if (Meteor.isClient) {
       teams.update({_id:this._id},{$pull:{members:Meteor.userId()}});
       Meteor.users.update(Meteor.userId(), { $unset: {"profile.team": ""} });
       Router.go('teams');
+    },
+    "submit .delete-team": function(){
+      event.preventDefault();
+      Meteor.call('deleteTeam', this._id);
+      Router.go('teams');
     }
   });
 
   Template.administration.events({
     "click .toggle-isjudge": function () {
       event.preventDefault();
-      Meteor.call('setJudge', this._id, !this.isJudge);
+      Meteor.call('setJudge', this._id, event.target.checked);
     },
     "click .toggle-isadmin": function () {
       event.preventDefault();
-      Meteor.call('setAdmin', this._id, !this.isAdmin);
+      Meteor.call('setAdmin', this._id, event.target.checked);
     },
     "submit .new-challenge": function(){
       event.preventDefault();
@@ -424,6 +437,11 @@ if (Meteor.isServer) {
     },
     saveTag: function(tag) {
       tech.upsert({description:tag},{description:tag});
+    },
+    deleteTeam: function(team){
+      hacks.remove({team:team});
+      Meteor.users.update({"profile.team":team}, { $unset: {"profile.team": ""} },{multi:true});
+      teams.remove({_id:team});
     }
   });
 }
