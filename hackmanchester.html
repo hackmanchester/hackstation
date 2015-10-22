@@ -10,20 +10,20 @@
 <template name="navigation">
     <div class="ui inverted menu">    
         <li class="item">{{> loginButtons}}</li>
-        <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}">Home</a>
-        <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}">All Hacks</a>
+        <a class="item {{isActive 'home'}}" href="{{pathFor route='home'}}"><i class="home icon"></i>Home</a>
+        <a class="item {{isActive 'hacks'}}" href="{{pathFor route='hacks'}}"><i class="lab icon"></i>All Hacks</a>
         {{#unless isJudge}}
         {{#unless isAdmin}}
         {{#if currentUser}}
-        <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}">My Hacks</a>
+        <a class="item {{isActive 'myhacks'}}" href="{{pathFor route='myhacks'}}"><i class="idea icon"></i>My Hacks</a>
         {{/if}}
         {{/unless}}
         {{/unless}}
-        <a class="item {{isActive 'teams'}}" href="{{pathFor route='teams'}}">Teams</a>
+        <a class="item {{isActive 'teams'}}" href="{{pathFor route='teams'}}"><i class="users icon"></i>Teams</a>
         {{#unless isJudge}}
         {{#unless isAdmin}}
         {{#if currentUser}}
-        <a class="item {{isActive 'myteam'}}" href="{{pathFor route='myteam'}}">My Team</a>
+        <a class="item {{isActive 'myteam'}}" href="{{pathFor route='myteam'}}"><i class="spy icon"></i>My Team</a>
         {{/if}}
         {{/unless}}
         {{/unless}}
