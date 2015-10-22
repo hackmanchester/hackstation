@@ -104,7 +104,7 @@
     <div class="ui card">
         <div class="content">
             <div class="header">
-                {{name}} (team <a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+                <i class="users icon"></i> {{name}} (team <a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
             </div>
             <div class="meta">
                 <ul>
@@ -136,7 +136,7 @@
                 <h1>{{name}}</h1>
             </div>
             <div class="ui secondary segment">
-                <h2>{{teamname team}}</h2>
+                <h2><i class="users icon"></i> {{teamname team}}</h2>
             </div>
             <div class="ui secondary segment">
                 <p>{{description}}</p>
@@ -232,8 +232,14 @@
 </template>
 
 <template name="teams">
-    <div class="ui raised very padded text container segment">
-        <h1>Teams</h1>
+    <div class="ui segment">
+        <h2 class="ui header">
+            <i class="users icon"></i> 
+            <div class="content">
+                Teams
+                <div class="sub header">Check out all the teams competing in HackManchester</div>
+            </div>
+        </h2>
     </div>
     <div class="ui container">
         <div class="ui three cards">
@@ -282,28 +288,24 @@
             </div>
             {{/if}}
             {{#unless ismyteam _id}}
-            <h2>{{name}}</h2>
-            <p>Find us on table: {{table}}</p>
+                <h2><i class="users icon"></i> Team {{name}}</h2>
+                <p>Find us on table: {{table}}</p>
             {{/unless}}
-            Members:
-            <ul>
-                {{#each members}}
-                    <li>{{username}}</li>
-                {{/each}}
-            </ul>
-            Hacks:
-            <ul>
-                {{#each hacks}}
-                    <li><a href="{{pathFor 'hack'}}">{{name}}</a></li>
-                {{/each}}
-            </ul>
+            <div class="ui segment">
+                Members: {{#each members}} <i class="user icon"></i> {{username}} {{/each}}
+                <br>
+                Hacks: {{#each hacks}} <i class="idea icon"></i> <a href="{{pathFor 'hack'}}">{{name}}</a> {{/each}}
+            </div>
             {{#if ismyteam _id}}
-            <p>Tired of this lot? Team letting you down? Got a better idea?</p>
-            <form class="leave-team">
-                <div class="field">
-                    <button class="ui negative button" type="submit">Leave team</button>
+                <div class="ui segment">
+                    <form class="leave-team">
+                        <p>Tired of this lot? Team letting you down? Got a better idea?</p>
+                        <br>
+                        <div class="field">
+                            <button class="ui negative button" type="submit">Leave team</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
             {{/if}}
         </div>
     </div>
