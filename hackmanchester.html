@@ -146,6 +146,11 @@
                 <a href="{{youtube}}" target="_blank">View video entry</a>
             </div>
             {{/if}}
+            {{#if hackurl}}
+                <div class="ui secondary segment">
+                    <a href="{{hackurl}}" target="_blank">View hack at {{hackurl}}</a>
+                </div>
+            {{/if}}
         </div>
     {{/unless}}
     {{#if myHack}}
@@ -177,7 +182,7 @@
                 <form class="new-judgement">
                     <div class="field">
                         <label for="judgement">Add a judgment:</label>
-                        <input type="text" name="judgement" placeholder="Add a judgment ..." value="{{judgement}}" />
+                        <textarea type="text" name="judgement" placeholder="Add a judgment ..." value="{{judgement}}"></textarea>
                     </div>
                     <button class="primary ui button" type="submit">Submit</button>
                 </form>
@@ -225,6 +230,10 @@
             <div class="field">
                 <label for="description">Youtube URL:</label>
                 <input type="text" name="youtube" placeholder="Youtube URL ..." value="{{youtube}}" />
+            </div>
+            <div class="field">
+                <label for="description">Hack URL:</label>
+                <input type="text" name="hackurl" placeholder="Hack URL ..." value="{{hackurl}}" />
             </div>
             <button class="ui positive button" type="submit">Save</button>
         </div>
@@ -455,24 +464,12 @@
         <div class="ui raised padded text container segment">
             <h2>{{description}}</h2>
         </div>
-        <div class="ui three column doubling grid container">
-            {{#each hacks}}
-                <div class="column">
-                    <a href="{{pathFor 'hack'}}">
-                        <div class="ui segments">
-                            <div class="ui segment">
-                                {{name}}
-                            </div>
-                            <div class="ui secondary segment">
-                                {{team}}
-                            </div>
-                            <div class="ui secondary segment">
-                                {{trim250 description}}
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {{/each}}
+        <div class="ui container">
+            <div class="ui three cards">
+                {{#each hacks}}
+                    {{> hackoverview }}
+                {{/each}}
+            </div>
         </div>
     {{/each}}
 

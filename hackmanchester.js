@@ -154,6 +154,7 @@ if (Meteor.isClient) {
         team:Meteor.user().profile.team,
         description:target.description.value,
         youtube:target.youtube.value,
+        hackurl:target.hackurl.value,
         created:new Date(),
         judgements: [],
         challenges:challenges,
@@ -192,6 +193,7 @@ if (Meteor.isClient) {
           name: target.name.value,
           description: target.description.value,
           youtube:target.youtube.value,
+          hackurl:target.hack.value,
           challenges:challenges,
           techchoices: techchoices
         }
