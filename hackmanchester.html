@@ -44,6 +44,37 @@
 
 <template name="home">
     <div class="ui raised padded text container segment">
+        <div class="ui massive divided horizontal list">
+            <div class="item">
+                <div class="content">
+                    <div class="header">Challenges</div>
+                    {{statistics/challenges}}
+                </div>
+            </div>
+            <div class="item">
+                <div class="content">
+                    <div class="header">Teams</div>
+                    {{statistics/teams}}
+                </div>
+            </div>
+            <div class="item">
+                <div class="content">
+                    <div class="header">Hacks</div>
+                    {{statistics/hacks}}
+                </div>
+            </div>
+        </div>
+        <div class="ui horizontal list">
+            {{#each techs}}
+            <div class="item">
+                <div class="content">
+                    <div class="header">{{name}}: {{count}}</div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="ui raised padded text container segment">
         <h2 class="ui header">Latest submissions:</h2>
     </div>
     <div class="ui container">

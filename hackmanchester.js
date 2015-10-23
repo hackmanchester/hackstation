@@ -125,6 +125,15 @@ if (Meteor.isClient) {
   Template.home.helpers({
     hacks: function(){
       return hacks.find({},{$sort:{created:-1},limit:3})
+    },
+    techs: function() {
+      return tech.find().map(function(t){
+        var count = hacks.find({techchoices: t._id}).count();
+        return {name: t.description, count:count};
+      });
+    },
+    statistics:function(){
+      return {hacks:hacks.find().count(), teams:teams.find().count(), challenges:challenges.find().count()}
     }
   });
 
