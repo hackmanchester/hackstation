@@ -133,7 +133,7 @@ if (Meteor.isClient) {
       });
     },
     statistics:function(){
-      return {hacks:hacks.find().count(), teams:teams.find().count(), challenges:challenges.find().count()}
+      return {hacks:hacks.find().count(),hackers:Meteor.users.find().count(), teams:teams.find().count(), challenges:challenges.find().count()}
     }
   });
 
