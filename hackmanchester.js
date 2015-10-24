@@ -120,6 +120,10 @@ if (Meteor.isClient) {
     return Meteor.user().profile.team === context;
   });
 
+  UI.registerHelper('countitems', function(context){
+    return context.length;
+  });
+
   Template.navigation.helpers({
     isActive: function(value){
       return Router.current().route.getName() == value ? 'active' : '';

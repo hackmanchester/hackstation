@@ -165,6 +165,9 @@
             <div class="description">
                 {{trim250 description}}
             </div>
+            {{#if isJudge}}
+            <div class="meta">{{countitems judgements}} comments</div>
+            {{/if}}
         </div>
         <div class="ui bottom attached button">
             {{#if myHack }}
