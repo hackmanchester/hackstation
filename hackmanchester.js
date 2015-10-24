@@ -264,7 +264,18 @@ if (Meteor.isClient) {
           judge: judge.username
         }
       });
-    }
+    },
+    enteredChallenges: function(){
+      var chals = this.challenges || [];
+      return challenges.find().map(function(c){
+        var entered = chals.indexOf(c._id) > -1;
+        return {
+          description: c.description,
+          _id: c._id,
+          entered:entered
+        }
+      });
+    },
   });
 
   Template.hack.events({

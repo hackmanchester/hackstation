@@ -194,13 +194,15 @@
             </div>
             <div class="ui secondary segment">
                 <div class="ui horizontal list">
-                {{#each challenges}}
+                {{#each enteredChallenges}}
+                    {{#if entered}}
                     <div class="item">
                         <i class="idea icon"></i>
                             <div class="content">
                                 <div class="header">{{description}}</div>
                             </div>
                     </div>
+                    {{/if}}
                 {{/each}}
                 </div>
             </div>
