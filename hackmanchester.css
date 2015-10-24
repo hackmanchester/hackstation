@@ -135,5 +135,9 @@ a:hover {
 	box-sizing: border-box;
 }
 
+.additional-link-container a, .login-close-text{
+	color: black;
+}
+
 
 

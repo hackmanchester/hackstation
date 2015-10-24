@@ -112,6 +112,10 @@ if (Meteor.isClient) {
     return teams.findOne({_id:context}).name;
   });
 
+  UI.registerHelper('techname', function(context){
+    return tech.findOne({_id:context}).description;
+  });
+
   UI.registerHelper('ismyteam', function(context){
     return Meteor.user().profile.team === context;
   });
@@ -202,7 +206,7 @@ if (Meteor.isClient) {
           name: target.name.value,
           description: target.description.value,
           youtube:target.youtube.value,
-          hackurl:target.hack.value,
+          hackurl:target.hackurl.value,
           challenges:challenges,
           techchoices: techchoices
         }

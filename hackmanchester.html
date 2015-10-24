@@ -152,7 +152,7 @@
     <div class="ui card">
         <div class="content">
             <div class="header">
-                <i class="users icon"></i> {{name}} (team <a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+                <i class="users icon"></i> {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
             </div>
             <div class="meta">
                 <ul>
@@ -187,10 +187,21 @@
                         {{name}}
                     </div>
                 </h2>
-
             </div>
             <div class="ui secondary segment">
                 <h2><i class="users icon"></i> {{teamname team}}</h2>
+            </div>
+            <div class="ui secondary segment">
+                <div class="ui horizontal list">
+                    {{#each techchoices}}
+                        <div class="item">
+                            <i class="lab icon"></i>
+                            <div class="content">
+                                <div class="header">{{techname this}}</div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
             </div>
             <div class="ui secondary segment">
                 <p>{{description}}</p>
