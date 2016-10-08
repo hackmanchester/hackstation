@@ -312,20 +312,21 @@ if (Meteor.isClient) {
   });
 
   Template.entry.events({
-    "click #add-tag": function(event, template){
+    "keyup input.search": function(event, template){
       event.preventDefault();
+      if (event.which === 13) {
+        var tag = event.target.value;
 
-      var tag = template.find("[name=tag]").value;
+        if(tag.length === 0) return;
 
-      if(tag.length === 0) return;
-
-      Meteor.call("saveTag", tag);
-      template.find("[name=tag]").value = '';
+        Meteor.call("saveTag", tag);
+        event.target.value = '';
+      }
     }
   });
 
   Template.entry.onRendered(
-      function(){
+    function(){
       $('.dropdown').dropdown({ transition: 'drop' });
     }
   );
