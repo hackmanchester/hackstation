@@ -15,19 +15,19 @@ Router.map(function(){
   });
   this.route('hacks',{
     template:'allhacks',
-    data: function(){
+    data(){
       return {hacks: hacks.find({})};
     }
   });
   this.route('myhacks',{
     path: '/hacks/my',
     template: 'myhacks',
-    data: function() {
+    data() {
       return {hacks: hacks.find({team:Meteor.user().profile.team})};
     }
   });
   this.route('teams',{
-    data: function() {
+    data() {
       var mapped = teams.find({}).map(function(t){
         var members = _.map(t.members, function(m){
           return Meteor.users.findOne({_id:m});
@@ -41,7 +41,7 @@ Router.map(function(){
   });
   this.route('team', {
     path:'/team/:_id',
-    data: function(){
+    data(){
       var myteam = teams.findOne({_id:this.params._id});
 
       var members = _.map(myteam.members, function(m){
@@ -53,7 +53,7 @@ Router.map(function(){
   });
   this.route('myteam',{
     template:'team',
-    data: function(){
+    data(){
       var myteam = teams.findOne({_id:Meteor.user().profile.team});
 
       var members = _.map(myteam.members, function(m){
@@ -65,14 +65,20 @@ Router.map(function(){
   });
   this.route('administration',{
     path:'/admin',
-    data: function(){
+    data(){
       return { users: Meteor.users.find({})};
     }
   });
   this.route('judging');
+  this.route('challenge',{
+    path: 'challenge/:_id',
+    data(){
+      return { challenge: challenges.findOne({_id: this.params._id}), entries: hacks.find({ challenges : this.params._id}) };
+    }
+  });
   this.route('hack', {
     path: '/hack/:_id',
-    data: function(){
+    data(){
       return hacks.findOne({ _id : this.params._id});
     }
   });
@@ -125,22 +131,22 @@ if (Meteor.isClient) {
   });
 
   Template.navigation.helpers({
-    isActive: function(value){
+    isActive(value){
       return Router.current().route.getName() == value ? 'active' : '';
     }
   });
 
   Template.home.helpers({
-    hacks: function(){
+    hacks(){
       return hacks.find({},{$sort:{created:-1},limit:3})
     },
-    techs: function() {
+    techs() {
       return tech.find().map(function(t){
         var count = hacks.find({techchoices: t._id}).count();
         return {name: t.description, count:count};
       });
     },
-    statistics:function(){
+    statistics(){
       return {hacks:hacks.find().count(),hackers:Meteor.users.find().count(), teams:teams.find().count(), challenges:challenges.find().count()}
     }
   });
@@ -448,7 +454,14 @@ if (Meteor.isClient) {
   });
 
   Template.judging.helpers({
-    hacks: function(){
+    hacks(){
+      var challengeId = this._id;
+      return hacks.find({challenges:{$in:[challengeId]}}).count();
+    }
+  });
+
+  Template.challenge.helpers({
+    hacks(){
       var challengeId = this._id;
       return hacks.find({challenges:{$in:[challengeId]}});
     }

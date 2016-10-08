@@ -557,15 +557,42 @@
 <template name="judging">
     {{#each challenges}}
         <div class="ui raised padded text container segment">
-            <h2>{{description}}</h2>
+            <h2><a href="{{pathFor 'challenge' _id=_id}}">{{description}}</a></h2>
+            {{hacks}} hacks
         </div>
-        <div class="ui container">
-            <div class="ui three cards">
-                {{#each hacks}}
-                    {{> hackoverview }}
+    {{/each}}
+</template>
+
+<template name="challenge">    
+    <div class="ui raised padded text container segment">
+        <h2>{{challenge/description}}</h2>
+    </div>
+    <div class="ui raised very padded text container">
+        <div class="ui segments">
+            <div class="ui segment">
+                {{#each entries}}
+                    {{> judgingEntry }}
                 {{/each}}
             </div>
         </div>
-    {{/each}}
+    </div>
+</template>
 
+<template name="judgingEntry">
+    <div class="header">
+        <i class="users icon"></i> {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+    </div>
+    <div class="meta">
+        <ul>
+            {{#each enteredChallenges}}
+                <li>{{description}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="description">
+        {{trim250 description}}
+    </div>
+    {{#if isJudge}}
+    <div class="meta">{{countitems judgements}} comments</div>
+    {{/if}}
 </template>
