@@ -312,7 +312,7 @@ if (Meteor.isClient) {
   });
 
   Template.entry.events({
-    "keyup input.search": function(event, template){
+    "keyup input.search": function(event, instance){
       event.preventDefault();
       if (event.which === 13) {
         var tag = event.target.value;
@@ -321,6 +321,9 @@ if (Meteor.isClient) {
 
         Meteor.call("saveTag", tag);
         event.target.value = '';
+        Meteor.setTimeout(function() {
+          $('div.item:contains("'+tag+'")').click();
+        },200);
       }
     }
   });

@@ -1,13 +1,12 @@
 /*
   DO NOT MODIFY - This file has been generated and will be regenerated
-  Semantic UI v2.0.8
+  Semantic UI v2.2.1
 */
 /*!
  * # Semantic UI - Form
  * http://github.com/semantic-org/semantic-ui/
  *
  *
- * Copyright 2015 Contributors
  * Released under the MIT license
  * http://opensource.org/licenses/MIT
  *
@@ -21,7 +20,6 @@
 @element : 'form';
 
 @import (multiple) '../../theme.config.import.less';
-
 
 /*******************************
             Elements
@@ -60,7 +58,7 @@
 
 .ui.form .fields .field {
   clear: both;
-  margin: @fieldMargin;
+  margin: 0em;
 }
 
 
@@ -93,10 +91,15 @@
 .ui.form input[type="tel"],
 .ui.form input[type="time"],
 .ui.form input[type="text"],
-.ui.form input[type="url"],
-.ui.form .ui.input {
-  width: 100%;
+.ui.form input[type="url"] {
+  width: @inputWidth;
   vertical-align: top;
+}
+
+/* Set max height on unusual input */
+.ui.form ::-webkit-datetime-edit,
+.ui.form ::-webkit-inner-spin-button {
+  height: @inputLineHeight;
 }
 
 .ui.form input:not([type]),
@@ -126,11 +129,6 @@
   border-radius: @inputBorderRadius;
   box-shadow: @inputBoxShadow;
   transition: @inputTransition;
-}
-
-/* Collapse Flex */
-.ui.form .ui.input > input {
-  width: 0px !important;
 }
 
 /* Text Area */
@@ -193,6 +191,7 @@
        Dropdown
 ---------------------*/
 
+/* Block */
 .ui.form .field > .selection.dropdown {
   width: 100%;
 }
@@ -200,21 +199,53 @@
   float: right;
 }
 
+/* Inline */
+.ui.form .inline.fields .field > .selection.dropdown,
 .ui.form .inline.field > .selection.dropdown {
   width: auto;
 }
+.ui.form .inline.fields .field > .selection.dropdown > .dropdown.icon,
 .ui.form .inline.field > .selection.dropdown > .dropdown.icon {
   float: none;
 }
 
-
 /*--------------------
-       Dividers
+       UI Input
 ---------------------*/
 
-.ui.form .divider {
-  clear: both;
-  margin: @dividerMargin;
+/* Block */
+.ui.form .field .ui.input,
+.ui.form .fields .field .ui.input,
+.ui.form .wide.field .ui.input {
+  width: 100%;
+}
+
+/* Inline  */
+.ui.form .inline.fields .field:not(.wide) .ui.input,
+.ui.form .inline.field:not(.wide) .ui.input {
+  width: auto;
+  vertical-align: middle;
+}
+
+/* Auto Input */
+.ui.form .fields .field .ui.input input,
+.ui.form .field .ui.input input {
+  width: auto;
+}
+
+/* Full Width Input */
+.ui.form .ten.fields .ui.input input,
+.ui.form .nine.fields .ui.input input,
+.ui.form .eight.fields .ui.input input,
+.ui.form .seven.fields .ui.input input,
+.ui.form .six.fields .ui.input input,
+.ui.form .five.fields .ui.input input,
+.ui.form .four.fields .ui.input input,
+.ui.form .three.fields .ui.input input,
+.ui.form .two.fields .ui.input input,
+.ui.form .wide.field .ui.input input {
+  flex: 1 0 auto;
+  width: 0px;
 }
 
 
@@ -238,13 +269,19 @@
 ---------------------*/
 
 .ui.form .field .prompt.label {
-  white-space: nowrap;
+  white-space: normal;
+  background: @promptBackground !important;
+  border: @promptBorder !important;
+  color: @promptTextColor !important;
 }
+.ui.form .inline.fields .field .prompt,
 .ui.form .inline.field .prompt {
-  margin: @inlineValidationMargin;
+  vertical-align: top;
+  margin: @inlinePromptMargin;
 }
+.ui.form .inline.fields .field .prompt:before,
 .ui.form .inline.field .prompt:before {
-  margin-top: @inlineValidationArrowOffset;
+  border-width: 0px 0px @inlinePromptBorderWidth @inlinePromptBorderWidth;
   bottom: auto;
   right: auto;
   top: 50%;
@@ -287,7 +324,7 @@
 .ui.form ::-webkit-input-placeholder {
   color: @inputPlaceholderColor;
 }
-.ui.form ::-ms-input-placeholder {
+.ui.form :-ms-input-placeholder {
   color: @inputPlaceholderColor;
 }
 .ui.form ::-moz-placeholder {
@@ -297,7 +334,7 @@
 .ui.form :focus::-webkit-input-placeholder {
   color: @inputPlaceholderFocusColor;
 }
-.ui.form :focus::-ms-input-placeholder {
+.ui.form :focus:-ms-input-placeholder {
   color: @inputPlaceholderFocusColor;
 }
 .ui.form :focus::-moz-placeholder {
@@ -308,8 +345,8 @@
 .ui.form .error ::-webkit-input-placeholder {
   color: @inputErrorPlaceholderColor;
 }
-.ui.form .error ::-ms-input-placeholder {
-  color: @inputErrorPlaceholderColor;
+.ui.form .error :-ms-input-placeholder {
+  color: @inputErrorPlaceholderColor !important;
 }
 .ui.form .error ::-moz-placeholder {
   color: @inputErrorPlaceholderColor;
@@ -318,8 +355,8 @@
 .ui.form .error :focus::-webkit-input-placeholder {
   color: @inputErrorPlaceholderFocusColor;
 }
-.ui.form .error :focus::-ms-input-placeholder {
-  color: @inputErrorPlaceholderFocusColor;
+.ui.form .error :focus:-ms-input-placeholder {
+  color: @inputErrorPlaceholderFocusColor !important;
 }
 .ui.form .error :focus::-moz-placeholder {
   color: @inputErrorPlaceholderFocusColor;
@@ -362,22 +399,13 @@
 ---------------------*/
 
 /* On Form */
-.ui.form.success .success.message {
+.ui.form.success .success.message:not(:empty) {
   display: block;
 }
-.ui.form.success .icon.success.message {
-  display: flex;
+.ui.form.success .compact.success.message:not(:empty) {
+  display: inline-block;
 }
-
-/*--------------------
-        Error
----------------------*/
-
-/* On Form */
-.ui.form.warning .warning.message {
-  display: block;
-}
-.ui.form.warning .icon.warning.message {
+.ui.form.success .icon.success.message:not(:empty) {
   display: flex;
 }
 
@@ -386,10 +414,28 @@
 ---------------------*/
 
 /* On Form */
-.ui.form.error .error.message {
+.ui.form.warning .warning.message:not(:empty) {
   display: block;
 }
-.ui.form.error .icon.error.message {
+.ui.form.warning .compact.warning.message:not(:empty) {
+  display: inline-block;
+}
+.ui.form.warning .icon.warning.message:not(:empty) {
+  display: flex;
+}
+
+/*--------------------
+        Error
+---------------------*/
+
+/* On Form */
+.ui.form.error .error.message:not(:empty) {
+  display: block;
+}
+.ui.form.error .compact.error.message:not(:empty) {
+  display: inline-block;
+}
+.ui.form.error .icon.error.message:not(:empty) {
   display: flex;
 }
 
@@ -545,6 +591,7 @@
 .ui.form .disabled.fields .field,
 .ui.form .disabled.field,
 .ui.form .field :disabled {
+  pointer-events: none;
   opacity: @disabledOpacity;
 }
 .ui.form .field.disabled label {
@@ -554,6 +601,7 @@
   opacity: 1;
 }
 
+
 /*--------------
     Loading
 ---------------*/
@@ -562,10 +610,6 @@
   position: relative;
   cursor: default;
   point-events: none;
-  text-shadow: none !important;
-  color: transparent !important;
-  transition: all 0s linear;
-  z-index: 100;
 }
 .ui.loading.form:before {
   position: absolute;
@@ -658,9 +702,33 @@
 .ui.form .inverted.segment .ui.checkbox label,
 .ui.form .inverted.segment .ui.checkbox .box,
 .ui.inverted.form .ui.checkbox label,
-.ui.inverted.form .ui.checkbox .box {
+.ui.inverted.form .ui.checkbox .box,
+.ui.inverted.form .inline.fields > label,
+.ui.inverted.form .inline.fields .field > label,
+.ui.inverted.form .inline.fields .field > p,
+.ui.inverted.form .inline.field > label,
+.ui.inverted.form .inline.field > p {
   color: @invertedLabelColor;
 }
+
+/* Inverted Field */
+.ui.inverted.form input:not([type]),
+.ui.inverted.form input[type="date"],
+.ui.inverted.form input[type="datetime-local"],
+.ui.inverted.form input[type="email"],
+.ui.inverted.form input[type="number"],
+.ui.inverted.form input[type="password"],
+.ui.inverted.form input[type="search"],
+.ui.inverted.form input[type="tel"],
+.ui.inverted.form input[type="time"],
+.ui.inverted.form input[type="text"],
+.ui.inverted.form input[type="url"] {
+  background: @invertedInputBackground;
+  border-color: @invertedInputBorderColor;
+  color: @invertedInputColor;
+  box-shadow: @invertedInputBoxShadow;
+}
+
 
 /*--------------------
      Field Groups
@@ -698,6 +766,7 @@
 .ui.form .fields {
   display: flex;
   flex-direction: row;
+  margin: @fieldsMargin;
 }
 .ui.form .fields > .field {
   flex: 0 1 auto;
@@ -752,6 +821,9 @@
   .ui.form .fields {
     flex-wrap: wrap;
   }
+
+  .ui[class*="equal width"].form .fields > .field,
+  .ui.form [class*="equal width"].fields > .field,
   .ui.form .two.fields > .fields,
   .ui.form .two.fields > .field,
   .ui.form .three.fields > .fields,
@@ -771,32 +843,16 @@
   .ui.form .ten.fields > .fields,
   .ui.form .ten.fields > .field {
     width: @oneColumn !important;
-    margin: @fieldMargin;
-    padding-left: 0%;
-    padding-right: 0%;
+    margin: 0em 0em @rowDistance;
   }
-}
-
-.ui.form .fields .field:first-child {
-  padding-left: 0%;
-}
-.ui.form .fields .field:last-child {
-  padding-right: 0%;
 }
 
 
 /* Sizing Combinations */
-
 .ui.form .fields .wide.field {
   width: @oneWide;
   padding-left: (@gutterWidth / 2);
   padding-right: (@gutterWidth / 2);
-}
-.ui.form .fields .wide.field:first-child {
-  padding-left: 0%;
-}
-.ui.form .fields .wide.field:last-child {
-  padding-right: 0%;
 }
 
 .ui.form .one.wide.field {
@@ -874,10 +930,20 @@
   .ui.form .fields > .fifteen.wide.field,
   .ui.form .fields > .sixteen.wide.field {
     width: @oneColumn !important;
-    margin: @fieldMargin;
-    padding-left: 0%;
-    padding-right: 0%;
   }
+  .ui.form .fields {
+    margin-bottom: 0em;
+  }
+}
+
+/*--------------------
+     Equal Width
+---------------------*/
+
+.ui[class*="equal width"].form .fields > .field,
+.ui.form [class*="equal width"].fields > .field {
+  width: 100%;
+  flex: 1 1 auto;
 }
 
 /*--------------------
@@ -918,10 +984,8 @@
 /* Inline Input */
 .ui.form .inline.fields .field > input,
 .ui.form .inline.fields .field > select,
-.ui.form .inline.fields .field > .ui.input,
 .ui.form .inline.field > input,
-.ui.form .inline.field > select,
-.ui.form .inline.field > .ui.input {
+.ui.form .inline.field > select {
   display: inline-block;
   width: auto;
 
@@ -931,7 +995,6 @@
   vertical-align: middle;
   font-size: @inlineInputSize;
 }
-
 
 /* Label */
 .ui.form .inline.fields .field > :first-child,
@@ -949,8 +1012,7 @@
   align-items: center;
 }
 .ui.form .inline.fields .wide.field > input,
-.ui.form .inline.fields .wide.field > select,
-.ui.form .inline.fields .wide.field > .ui.input {
+.ui.form .inline.fields .wide.field > select {
   width: 100%;
 }
 
@@ -959,24 +1021,29 @@
         Sizes
 ---------------------*/
 
-/* Standard */
+.ui.mini.form {
+  font-size: @mini;
+}
+.ui.tiny.form {
+  font-size: @tiny;
+}
 .ui.small.form {
   font-size: @small;
 }
-
-/* Medium */
 .ui.form {
   font-size: @medium;
 }
-
-/* Large */
 .ui.large.form {
   font-size: @large;
 }
-
-/* Huge */
+.ui.big.form {
+  font-size: @big;
+}
 .ui.huge.form {
   font-size: @huge;
+}
+.ui.massive.form {
+  font-size: @massive;
 }
 
 .loadUIOverrides();

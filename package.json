@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "autoprefixer": "^6.3.1"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.7"
+  }
+}
