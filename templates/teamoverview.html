@@ -1,0 +1,36 @@
+<template name="teamoverview">
+    <div class="ui card">
+        <div class="content">
+            <div class="header">
+                <i class="users icon"></i> {{name}}
+            </div>
+            <div class="meta">
+                {{#each members}} <i class="user icon"></i> {{username}} {{/each}}
+            </div>
+            <div class="description">
+                {{#each hacks}}
+                    <i class="idea icon"></i> <a href="{{pathFor 'hack'}}">{{name}}</a> <br>
+                {{/each}}
+            </div>
+        </div>
+        <div class="extra content">
+            <p>Find us on table: {{table}}</p>
+        </div>
+        {{#if currentUser}}
+        {{#unless isJudge}}
+        {{#unless isAdmin}}
+        {{#unless currentUser/profile/team}}
+        <div class="extra content">
+            <form class="join-team">
+                <button class="positive ui button" type="submit">Join this team</button>
+            </form>
+        </div>
+        {{/unless}}
+        {{/unless}}
+        {{/unless}}
+        {{/if}}
+        <div class="ui bottom attached button">
+            <a href="{{pathFor 'team' }}">View</a>
+        </div>
+    </div>
+</template>

@@ -73,7 +73,7 @@ Router.map(function(){
   this.route('challenge',{
     path: 'challenge/:_id',
     data(){
-      return { challenge: challenges.findOne({_id: this.params._id}), entries: hacks.find({ challenges : this.params._id}) };
+      return { challenge: challenges.findOne({_id: this.params._id}), entries: hacks.find({ challenges : this.params._id, youtube:{$ne:""}}) };
     }
   });
   this.route('hack', {
@@ -456,14 +456,8 @@ if (Meteor.isClient) {
   Template.judging.helpers({
     hacks(){
       var challengeId = this._id;
-      return hacks.find({challenges:{$in:[challengeId]}}).count();
-    }
-  });
-
-  Template.challenge.helpers({
-    hacks(){
-      var challengeId = this._id;
-      return hacks.find({challenges:{$in:[challengeId]}});
+      return {entries: hacks.find({challenges:{$in:[challengeId]}}).count(),
+              validEntries:hacks.find({challenges:{$in:[challengeId]},youtube:{$ne:""}}).count()};
     }
   });
 }

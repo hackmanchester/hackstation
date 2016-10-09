@@ -1,0 +1,41 @@
+<template name="entry">
+    <div class="ui segment">
+        <div class="ui form">
+            <div class="field">
+                <label for="name">Name:</label>
+                <input type="text" name="name" placeholder="Hack name ..." value="{{name}}" />
+            </div>
+            {{#each myChallenges}}
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" name="challenges" checked={{entered}} value="{{_id}}" tabindex="0" />
+                    <label>{{description}}</label>
+                </div>
+            </div>
+            {{/each}}
+            <div class="field">
+                <label for="description">Description:</label>
+                <textarea type="text" name="description" placeholder="Description ..." value="{{description}}"></textarea>
+            </div>
+            <div class="field">
+                <label for="technologies">Technologies:</label>
+                <select name="technologies" class="ui fluid search dropdown" multiple="">
+                    <option value="">Tech</option>
+                    {{#each myTechnologies}}
+                        <option value="{{_id}}" selected={{selected}}>{{description}}</option>
+                    {{/each}}
+                </select>
+                {{checkState}}
+            </div>
+            <div class="field">
+                <label for="description">Youtube URL:</label>
+                <input type="text" name="youtube" placeholder="Youtube URL ..." value="{{youtube}}" />
+            </div>
+            <div class="field">
+                <label for="description">Hack URL:</label>
+                <input type="text" name="hackurl" placeholder="Hack URL ..." value="{{hackurl}}" />
+            </div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </div>
+</template>

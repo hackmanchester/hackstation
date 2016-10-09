@@ -1,0 +1,18 @@
+<template name="judgingEntry">
+    <div class="header">
+        <i class="users icon"></i> {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+    </div>
+    <div class="meta">
+        <ul>
+            {{#each enteredChallenges}}
+                <li>{{description}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="description">
+        {{trim250 description}}
+    </div>
+    {{#if isJudge}}
+    <div class="meta">{{countitems judgements}} comments</div>
+    {{/if}}
+</template>

@@ -1,0 +1,8 @@
+<template name="judging">
+    {{#each challenges}}
+        <div class="ui raised padded text container segment">
+            <h2><a href="{{pathFor 'challenge' _id=_id}}">{{description}}</a></h2>
+            {{hacks/entries}} entries, {{hacks/validEntries}} available for judging
+        </div>
+    {{/each}}
+</template>

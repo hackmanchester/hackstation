@@ -1,0 +1,30 @@
+<template name="hackoverview">
+    <div class="ui card">
+        <div class="content">
+            <div class="header">
+                <i class="users icon"></i> {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
+            </div>
+            <div class="meta">
+                <ul>
+                    {{#each enteredChallenges}}
+                        <li>{{description}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="description">
+                {{trim250 description}}
+            </div>
+            {{#if isJudge}}
+            <div class="meta">{{countitems judgements}} comments</div>
+            {{/if}}
+        </div>
+        <div class="ui bottom attached button">
+            {{#if myHack }}
+                <a href="{{pathFor 'hack'}}">Edit</a>
+            {{/if}}
+            {{#unless myHack }}
+                <a href="{{pathFor 'hack'}}">View</a>
+            {{/unless}}
+        </div>
+    </div>
+</template>

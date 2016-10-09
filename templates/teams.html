@@ -1,0 +1,18 @@
+<template name="teams">
+    <div class="ui raised very padded text container segment">
+        <h2 class="ui header">
+            <i class="users icon"></i> 
+            <div class="content">
+                Teams
+                <div class="sub header">Check out all the teams competing in HackManchester</div>
+            </div>
+        </h2>
+    </div>
+    <div class="ui container">
+        <div class="ui three cards">
+        {{#each teams}}
+            {{> teamoverview }}
+        {{/each}}
+        </div>
+    </div>
+</template>

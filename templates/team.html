@@ -1,0 +1,63 @@
+<template name="team">
+    {{#if currentUser}}
+    {{#unless name}}
+        <div class="ui raised very padded text container">
+            <div class="ui segment form">
+                <h2>Want to create a team?</h2>
+                <p>You don't currently belong to a team. Either create one here or find a team on the <a class="item" href="{{pathFor route='teams'}}">Teams</a> page.</p>
+                <form class="add-team">
+                    {{> teamform }}
+                </form>
+            </div>
+        </div>
+    {{/unless}}
+    {{#if name}}
+    <div class="ui raised very padded text container">
+        <div class="ui segment">
+            {{#if ismyteam _id}}
+            <div class="ui segment form">
+                <form class="edit-team">
+                    {{> teamform }}
+                </form>
+            </div>
+            {{/if}}
+            {{#unless ismyteam _id}}
+                <h2><i class="users icon"></i> {{name}}</h2>
+                <p>Find us on table: {{table}}</p>
+            {{/unless}}
+            <div class="ui segment">
+                Members: {{#each members}} <i class="user icon"></i> {{username}} {{/each}}
+                <br>
+                Hacks: {{#each hacks}} <i class="idea icon"></i> <a href="{{pathFor 'hack'}}">{{name}}</a> {{/each}}
+            </div>
+            {{#if ismyteam _id}}
+                <div class="ui segment">
+                    <form class="leave-team">
+                        <p>Tired of this lot? Team letting you down? Got a better idea?</p>
+                        <br>
+                        <div class="field">
+                            <button class="ui negative button" type="submit">Leave team</button>
+                        </div>
+                    </form>
+                </div>
+            {{/if}}
+        </div>
+        {{#if isAdmin}}
+        <div class="ui segment center aligned">
+            <form class="delete-team">
+                <div class="field">
+                    <button class="ui negative button" type="submit" onclick="javascript:return confirm('Are you sure?');">Delete this team?</button>
+                </div>
+            </form>
+        </div>
+        {{/if}}
+    </div>
+    {{/if}}
+    {{/if}}
+    {{#unless currentUser}}
+    <div class="ui raised very padded text container segment">
+        <h2>Want to be part of a hack?</h2>
+        <p>You need to sign in or create an account to be part of a team.</p>
+    </div>
+    {{/unless}}
+</template>

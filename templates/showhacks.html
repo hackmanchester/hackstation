@@ -1,0 +1,29 @@
+<template name="showhacks">
+    <div class="ui container">
+        <div class="ui three cards">
+        {{#each hacks}}
+                {{> hackoverview }}
+        {{/each}}
+        </div>
+    </div>
+    {{#unless isJudge}}
+    {{#unless isAdmin}}
+        <div class="ui raised very padded text container segment">
+            <h2>Want to submit a new hack?</h2>
+            {{#unless currentUser}}
+                You are not currently logged in!
+            {{/unless}}
+            {{#if currentUser}}
+                {{#unless currentUser/profile/team}}
+                    You are not in a team yet!
+                {{/unless}}
+                {{#if currentUser/profile/team}}
+                    <form class="new-hack">
+                        {{> entry }}
+                    </form>
+                {{/if}}
+            {{/if}}
+        </div>
+    {{/unless}}
+    {{/unless}}
+</template>

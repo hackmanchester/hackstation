@@ -1,0 +1,103 @@
+<template name="hack">
+    <div class="ui raised very padded text container">
+    {{#unless myHack}}
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2 class="ui header">
+                    <i class="idea icon"></i>
+                    <div class="content">
+                        {{name}}
+                    </div>
+                </h2>
+            </div>
+            <div class="ui secondary segment">
+                <div class="ui horizontal list">
+                {{#each enteredChallenges}}
+                    {{#if entered}}
+                    <div class="item">
+                        <i class="idea icon"></i>
+                            <div class="content">
+                                <div class="header">{{description}}</div>
+                            </div>
+                    </div>
+                    {{/if}}
+                {{/each}}
+                </div>
+            </div>
+            <div class="ui secondary segment">
+                <h2><i class="users icon"></i> {{teamname team}}</h2>
+            </div>
+            <div class="ui secondary segment">
+                <div class="ui horizontal list">
+                    {{#each techchoices}}
+                        <div class="item">
+                            <i class="lab icon"></i>
+                            <div class="content">
+                                <div class="header">{{techname this}}</div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="ui secondary segment">
+                <p>{{description}}</p>
+            </div>
+            {{#if youtube}}
+            <div class="ui secondary segment">
+                <a href="{{youtube}}" target="_blank">View video entry</a>
+            </div>
+            {{/if}}
+            {{#if hackurl}}
+                <div class="ui secondary segment">
+                    <a href="{{hackurl}}" target="_blank">View hack at {{hackurl}}</a>
+                </div>
+            {{/if}}
+        </div>
+        {{#if isAdmin}}
+            <div class="ui segment center aligned">
+                <form class="delete-hack">
+                    <div class="field">
+                        <button class="ui negative button" type="submit" onclick="javascript:return confirm('Are you sure?');">Delete this hack?</button>
+                    </div>
+                </form>
+            </div>
+        {{/if}}
+    {{/unless}}
+    {{#if myHack}}
+        <form class="edit-hack">
+            {{> entry }}
+        </form>
+    {{/if}}
+    {{#if isJudge}}
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Judges comments:</h2>
+            </div>
+            {{#unless judgesComments}}
+            <div class="ui segment secondary">
+                <p>No comments have been made yet!</p>
+            </div>
+            {{/unless}}
+            {{#each judgesComments}}
+                <div class="ui segment">
+                    <div class="ui segment">
+                        {{created}} <strong>{{judge}}</strong>
+                    </div>
+                    <div class="ui inverted segment">
+                        {{judgement}}
+                    </div>
+                </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-judgement">
+                    <div class="field">
+                        <label for="judgement">Add a judgment:</label>
+                        <textarea type="text" name="judgement" placeholder="Add a judgment ..." value="{{judgement}}"></textarea>
+                    </div>
+                    <button class="primary ui button" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    {{/if}}
+    </div>
+</template>

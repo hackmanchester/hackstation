@@ -1,0 +1,14 @@
+<template name="challenge">    
+    <div class="ui raised padded text container segment">
+        <h1>{{challenge/description}}</h1>
+    </div>
+    <div class="ui raised very padded text container">
+        <div class="ui segments">
+            <div class="ui segment">
+                {{#each entries}}
+                    {{> judgingEntry }}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</template>

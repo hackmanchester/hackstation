@@ -1,0 +1,93 @@
+<template name="administration">
+    <div class="ui raised very padded text container">
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Challenges</h2>
+            </div>
+            {{#each challenges}}
+            <div class="ui segment secondary form">
+                <form class="edit-challenge">
+                    <div class="two fields">
+                        <div class="field">
+                            <input type="text" name="description" placeholder="A Challenge" value="{{description}}" />
+                        </div>
+                        <div class="field">
+                            <button class="positive ui button" type="submit">Save</button>
+                            <button class="negative ui button delete-challenge" type="button">Delete</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-challenge">
+                    <div class="field">
+                        <input type="text" name="challenge" placeholder="Add a new challenge ..." value="{{challenge}}" />
+                    </div>
+                    <button class="positive ui button" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Users</h2>
+            </div>
+        </div>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Id</th>
+                    <th>Judge</th>
+                    <th>Admin</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#each users}}
+                <tr>
+                    <td>
+                        {{username}}
+                    </td>
+                    <td>
+                        {{_id}}
+                    </td>
+                    <td>
+                        <input type="checkbox" checked="{{profile/isJudge}}" class="toggle-isjudge" />
+                    </td>
+                    <td>
+                        <input type="checkbox" checked="{{profile/isAdmin}}" class="toggle-isadmin" />
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <div class="ui segments">
+            <div class="ui segment">
+                <h2>Tech</h2>
+            </div>
+            {{#each technologies}}
+                <div class="ui segment secondary form">
+                    <form class="edit-tech">
+                        <div class="two fields">
+                            <div class="field">
+                                <input type="text" name="description" placeholder="Tech name ..." value="{{description}}" />
+                            </div>
+                            <div class="field">
+                                <button class="positive ui button" type="submit">Save</button>
+                                <button class="negative ui button delete-tech" type="button">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            {{/each}}
+            <div class="ui segment form">
+                <form class="new-tech">
+                    <div class="field">
+                        <input type="text" name="tech" placeholder="Add a new tech ..." value="{{tech}}" />
+                    </div>
+                    <button class="positive ui button" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
