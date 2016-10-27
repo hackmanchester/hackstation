@@ -267,7 +267,7 @@ Template.judgingEntry.helpers({
         var judge = Meteor.users.findOne({_id: j.judge});
         return {
           judgement: j.judgement,
-          created: moment(j.created).format('DD-MM-YYYY hh:mm'),
+          created: j.created.toLocaleString(),
           judge: judge.username
         }
       });
@@ -294,7 +294,7 @@ Template.judgingEntry.helpers({
         var judge = Meteor.users.findOne({_id: j.judge});
         return {
           judgement: j.judgement,
-          created: moment(j.created).format('DD-MM-YYYY hh:mm'),
+          created: j.created.toLocaleString(),
           judge: judge.username
         }
       });
