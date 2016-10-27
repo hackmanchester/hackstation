@@ -1,14 +1,24 @@
 <template name="challenge">    
     <div class="ui raised padded text container segment">
-        <h1>{{challenge/description}}</h1>
+        <h1 class="ui header">{{challenge/description}}</h1>
+    </div>
+    <div class="ui raised padded text container segment">
+        <h2 class="ui header">Eligible entries</h2>
     </div>
     <div class="ui raised very padded text container">
-        <div class="ui segments">
-            <div class="ui segment">
-                {{#each entries}}
-                    {{> judgingEntry }}
-                {{/each}}
-            </div>
-        </div>
+        {{#each validEntries}}
+            {{> judgingEntry }}
+        {{/each}}
+    </div>
+    <div class="ui raised padded text container segment">
+        <h2 class="ui header">Awaiting video</h2>
+        {{#each entries}}
+            <h4 class="ui header">
+                <i class="idea icon"></i>
+                <div class="content">
+                    {{name}} ({{teamname team}})
+                </div>
+            </h4>
+        {{/each}}
     </div>
 </template>

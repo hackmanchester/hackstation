@@ -73,7 +73,11 @@ Router.map(function(){
   this.route('challenge',{
     path: 'challenge/:_id',
     data(){
-      return { challenge: challenges.findOne({_id: this.params._id}), entries: hacks.find({ challenges : this.params._id, youtube:{$ne:""}}) };
+      return { 
+          challenge: challenges.findOne({_id: this.params._id}),
+          validEntries: hacks.find({ challenges : this.params._id, youtube:{$ne:""}}),
+          entries: hacks.find({ challenges : this.params._id, youtube:{$eq:""}})
+        };
     }
   });
   this.route('hack', {
@@ -255,6 +259,30 @@ if (Meteor.isClient) {
 
       return challenges.find({_id:{$in:this.challenges}});
     }
+  });
+
+Template.judgingEntry.helpers({
+    judgesComments: function(){
+      return this.judgements.map(function(j){
+        var judge = Meteor.users.findOne({_id: j.judge});
+        return {
+          judgement: j.judgement,
+          created: moment(j.created).format('DD-MM-YYYY hh:mm'),
+          judge: judge.username
+        }
+      });
+    },
+    enteredChallenges: function(){
+      var chals = this.challenges || [];
+      return challenges.find().map(function(c){
+        var entered = chals.indexOf(c._id) > -1;
+        return {
+          description: c.description,
+          _id: c._id,
+          entered:entered
+        }
+      });
+    },
   });
 
   Template.hack.helpers({

@@ -1,18 +1,59 @@
 <template name="judgingEntry">
-    <div class="header">
-        <i class="users icon"></i> {{name}} (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
-    </div>
-    <div class="meta">
-        <ul>
+    <div class="ui segments">
+        <div class="ui segment">
+            <h2 class="ui header">
+                <i class="idea icon"></i>
+                <div class="content">
+                    {{name}} (<i class="users icon"></i> {{teamname team}})
+                </div>
+            </h2>
+            <div class="ui horizontal list">
             {{#each enteredChallenges}}
-                <li>{{description}}</li>
+                {{#if entered}}
+                <div class="item">
+                    <i class="idea icon"></i>
+                        <div class="content">
+                            <div class="header">{{description}}</div>
+                        </div>
+                </div>
+                {{/if}}
             {{/each}}
-        </ul>
+            </div>
+            <div class="ui horizontal list">
+                {{#each techchoices}}
+                    <div class="item">
+                        <i class="lab icon"></i>
+                        <div class="content">
+                            <div class="header">{{techname this}}</div>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="ui secondary segment">
+            <p>{{description}}</p>
+        </div>
+        <div class="ui secondary segment">
+            <a href="{{youtube}}" target="_blank">View video entry</a>
+            {{#if hackurl}} | <a href="{{hackurl}}" target="_blank">View hack at {{hackurl}}</a>{{/if}}
+        </div>
+        <div class="ui segment">
+            <h2>Judges comments:</h2>
+        </div>
+        {{#unless judgesComments}}
+        <div class="ui segment secondary">
+            <p>No comments have been made yet!</p>
+        </div>
+        {{/unless}}
+        {{#each judgesComments}}
+            <div class="ui segment">
+                <div class="ui segment">
+                    {{created}} <strong>{{judge}}</strong>
+                </div>
+                <div class="ui inverted segment">
+                    {{judgement}}
+                </div>
+            </div>
+        {{/each}}
     </div>
-    <div class="description">
-        {{trim250 description}}
-    </div>
-    {{#if isJudge}}
-    <div class="meta">{{countitems judgements}} comments</div>
-    {{/if}}
 </template>
