@@ -151,7 +151,7 @@ if (Meteor.isClient) {
       });
     },
     statistics(){
-      return {hacks:hacks.find().count(),hackers:Meteor.users.find({$or:[{"profile.isAdmin":false, "profile.isJudge":false}]}).count(), teams:teams.find().count(), challenges:challenges.find().count()}
+      return {hacks:hacks.find().count(),hackers:Meteor.users.find({$or:[{"profile.isAdmin":{$ne:true}, "profile.isJudge":{$ne:true}}]}).count(), teams:teams.find().count(), challenges:challenges.find().count()}
     }
   });
 
