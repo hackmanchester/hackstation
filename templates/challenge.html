@@ -16,7 +16,7 @@
             <h4 class="ui header">
                 <i class="idea icon"></i>
                 <div class="content">
-                    <a href="{{pathFor 'hack'}}">{{name}}</a> (<a href="{{pathFor 'team'}}">{{teamname team}}</a>)
+                    <a href="{{pathFor 'hack'}}">{{name}}</a> (<a href="{{pathFor 'team' _id=team}}">{{teamname team}}</a>)
                 </div>
             </h4>
         {{/each}}
