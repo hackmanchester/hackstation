@@ -28,7 +28,7 @@ Router.map(function(){
   });
   this.route('teams',{
     data() {
-      var mapped = teams.find({}).map(function(t){
+      var mapped = teams.find({}, {sort: {table: 1}}).map(function(t){
         var members = _.map(t.members, function(m){
           return Meteor.users.findOne({_id:m});
         });
