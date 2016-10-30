@@ -1,4 +1,5 @@
 <template name="challenge">    
+    {{#if isJudge}}
     <div class="ui raised padded text container segment">
         <h1 class="ui header">{{challenge/description}}</h1>
     </div>
@@ -21,4 +22,5 @@
             </h4>
         {{/each}}
     </div>
+    {{/if}}
 </template>
